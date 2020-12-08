@@ -9,4 +9,6 @@
 ;; Set up visible bell instead of noisy one
 ;; (setq visible-bell t)
 
-(set-face-attribute 'default nil :font "FreeMono" :height 200)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 200)
+
+(load-theme 'tango-dark)
