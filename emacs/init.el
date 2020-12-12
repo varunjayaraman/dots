@@ -14,7 +14,7 @@
 
 (set-face-attribute 'default nil :font "Fira Code" :height 150)
 
-(load-theme 'wombat)
+(load-theme 'doom-dracula t)
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
