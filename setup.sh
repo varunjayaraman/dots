@@ -3,6 +3,8 @@
 
 sudo apt update
 
+DOTFILES_PATH="$HOME/dots"
+
 # install docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable edge"
@@ -11,8 +13,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 sudo apt install silversearcher-ag
 
-# utils
-sudo apt install fzf
+# utils sudo apt install fzf
 sudo apt install xclip
 
 # Python
@@ -28,13 +29,16 @@ sudo apt install gh
 
 # setup dotfiles
 echo "Creating symlink for .tmux.conf"
-sudo ln -s $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
+sudo ln -s $DOTFILES_PATH/tmux.conf $HOME/.tmux.conf
 
 echo "Creating symlink for gitconfig..."
-sudo ln -s $HOME/dotfiles/gitconfig $HOME/.gitconfig
+sudo ln -s $HOME/dots/gitconfig $HOME/.gitconfig
 
 echo "Creating symlink for .agignore"
-ln -s $HOME/dotfiles/agignore $HOME/.agignore
+ln -s $HOME/dots/agignore $HOME/.agignore
+
+echo "Creating symlink for emacs init.el..."
+ln -s $HOME/dots/emacs/init.el $HOME/.emacs.d/init.el
 
 echo "Downloading zsh"
 sudo apt install zsh
@@ -53,7 +57,7 @@ curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubuserc
 
 echo "Creating symlink for .vimrc"
 if [ ! -e $HOME/.config/nvim/init.vim ]; then
-  sudo ln -s $HOME/dotfiles/nvimrc $HOME/.config/nvim/init.vim
+  sudo ln -s $DOTFILES_PATH/nvimrc $HOME/.config/nvim/init.vim
 fi
 
 # Terminal color profiles
