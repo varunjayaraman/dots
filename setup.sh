@@ -19,26 +19,20 @@ sudo apt install xclip
 # Python
 sudo apt install pip3
 
-# Github CLI
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-
-sudo apt-add-repository https://cli.github.com/packages
-
 sudo apt update
-sudo apt install gh
 
 # setup dotfiles
 echo "Creating symlink for .tmux.conf"
 sudo ln -s $DOTFILES_PATH/tmux.conf $HOME/.tmux.conf
 
 echo "Creating symlink for gitconfig..."
-sudo ln -s $HOME/dots/gitconfig $HOME/.gitconfig
+sudo ln -s $DOTFILES_PATH/gitconfig $HOME/.gitconfig
 
 echo "Creating symlink for .agignore"
-ln -s $HOME/dots/agignore $HOME/.agignore
+ln -s $DOTFILES_PATH/agignore $HOME/.agignore
 
 echo "Creating symlink for emacs init.el..."
-ln -s $HOME/dots/emacs/init.el $HOME/.emacs.d/init.el
+ln -s $DOTFILES_PATH/emacs/init.el $HOME/.emacs.d/init.el
 
 echo "Downloading zsh"
 sudo apt install zsh
@@ -76,9 +70,6 @@ sudo chmod +x /usr/local/bin/rust-analyzer
 
 rustup component add rustfmt
 rustup component add clippy
-
-# install haskell
-sudo apt-get install haskell-platform
 
 # Fonts
 sudo apt install fonts-firacode
