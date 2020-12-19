@@ -151,7 +151,7 @@ let g:go_auto_type_info = 1
 
 
 lua << EOF
-require'nvim_lsp'.elixirls.setup{}
+require'lspconfig'.elixirls.setup{}
 EOF
 
 " === BEGIN RUST SETUP ===
@@ -162,7 +162,7 @@ EOF
 lua <<EOF
 
 -- nvim_lsp object
-local nvim_lsp = require'nvim_lsp'
+local nvim_lsp = require'lspconfig'
 
 -- function to attach completion and diagnostics
 -- when setting up lsp
@@ -211,7 +211,7 @@ let g:diagnostic_insert_delay = 1
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
 " Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>PrevDiagnosticCycle<cr>

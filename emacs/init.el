@@ -14,7 +14,6 @@
 
 (set-face-attribute 'default nil :font "Fira Code" :height 150)
 
-(load-theme 'doom-dracula t)
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -78,6 +77,8 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
+
+(load-theme 'doom-dracula t)
 
 ;; prog-mode is the base mode for any programming language
 (use-package rainbow-delimiters
@@ -183,3 +184,16 @@
 (setq auto-save-default nil)
 
 (use-package org)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

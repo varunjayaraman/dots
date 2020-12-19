@@ -7,19 +7,12 @@ DOTFILES_PATH="$HOME/dots"
 
 # install docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable edge"
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo apt install silversearcher-ag
-
-# utils sudo apt install fzf
-sudo apt install xclip
-
-# Python
-sudo apt install pip3
-
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+
+sudo apt install silversearcher-ag \
+		 xclip
 
 # setup dotfiles
 echo "Creating symlink for .tmux.conf"
@@ -32,18 +25,13 @@ echo "Creating symlink for .agignore"
 ln -s $DOTFILES_PATH/agignore $HOME/.agignore
 
 echo "Creating symlink for emacs init.el..."
+mkdir $HOME/.emacs.d
 ln -s $DOTFILES_PATH/emacs/init.el $HOME/.emacs.d/init.el
 
-echo "Downloading zsh"
-sudo apt install zsh
-chsh -s $(which zsh)
-
-# install neovim
-curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-
-chmod u+x nvim.appimage
-
-sudo mv nvim.appimage /usr/bin/nvim
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt update
+sudo apt install neovim
 
 mkdir -p ~/.config/nvim
 touch ~/.config/nvim/init.vm
@@ -54,22 +42,19 @@ if [ ! -e $HOME/.config/nvim/init.vim ]; then
   sudo ln -s $DOTFILES_PATH/nvimrc $HOME/.config/nvim/init.vim
 fi
 
-# Terminal color profiles
-sudo apt install dconf-cli uuid-runtime
-bash -c  "$(wget -qO- https://git.io/vQgMr)"
+echo "Creating symlink for zshrc"
+rm ~/.zshrc
+sudo ln -s $DOTFILES_PATH/zshrc $HOME/.zshrc
 
-# Bluetooth
-snap install bluez
-
-# Install rust & cargo
+echo "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o /usr/local/bin/rust-analyzer
-
-sudo chmod +x /usr/local/bin/rust-analyzer
-
-rustup component add rustfmt
-rustup component add clippy
+# Terminal color profiles
+sudo apt install dconf-cli uuid-runtime
 
 # Fonts
 sudo apt install fonts-firacode
+
+# Install go
+echo "Installing golang..."
+tar -C /usr/local -xzf go1.15.6.linux-amd64.tar.gz
