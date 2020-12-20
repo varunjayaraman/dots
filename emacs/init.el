@@ -1,6 +1,9 @@
 ;; This buffer is for text that is not saved, and for Lisp evaluation.
 ;; To create a file, visit it with C-x C-f and enter text in its buffer.
 
+;; Many old emacs libs depend on `cl` instead of `cl-lib`, and in Emacs-27 `cl` now carries a deprecation warning. We are just disabling this
+(setq byte-compile-warnings '(cl-functions))
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
@@ -184,16 +187,71 @@
 (setq auto-save-default nil)
 
 (use-package org)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+(use-package go-mode
+  :defer t
+  :ensure t
+  :mode ("\\.go\\'" . go-mode)
+  :init
+  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
+  (setq compilation-read-command nil)
+  :bind (("M-." . godef-jump)))
+
+;; LSP setup
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "s-k")
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Optional - provides fancier overlays
+;; (use-package lsp-ui
+  ;; :ensure t
+  ;; :commands lsp-ui-mode)
+
+(use-package lsp-ivy
+  :ensure t)
+
+;; Company mode is a standard completion package that works with lsp-mode
+(use-package company
+  :ensure t
+  :config
+  ;; Optionally enable completion as you type behavior
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1))
+
+;; Optional - provides snippet support
+(use-package yasnippet
+  :ensure t
+  :commands yas-minor-mode
+  :hook (go-mode . yas-minor-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
+   '(flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+

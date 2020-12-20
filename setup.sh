@@ -55,6 +55,3 @@ sudo apt install dconf-cli uuid-runtime
 # Fonts
 sudo apt install fonts-firacode
 
-# Install go
-echo "Installing golang..."
-tar -C /usr/local -xzf go1.15.6.linux-amd64.tar.gz
