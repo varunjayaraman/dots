@@ -1,3 +1,9 @@
 [user]
-	email = varun.jayaraman@gmail.com
-	name = Varun Jayaraman
+    email = varun.jayaraman@gmail.com
+    name = Varun Jayaraman
+[alias]
+    hash = log --pretty=format:'%h' -n 1
+[core]
+    editor = vim
+[pull]
+  rebase = true

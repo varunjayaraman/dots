@@ -7,7 +7,7 @@ let g:has_async = 1
 " auto-install vim-plug
 
 " Plugins
-call plug#begin('~/dotfiles/nvim/plugins')
+call plug#begin('~/dots/nvim/plugins')
 Plug 'neovim/nvim-lspconfig'
 Plug 'tjdevries/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
