@@ -223,11 +223,20 @@
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
+;; Elixir
 (use-package elixir-mode
   :ensure t
   :bind (:map elixir-mode-map
-              ("C-c C-t" . roonie/mix-run-test-at-point)))
+              ;; Runs test at point
+              ("C-c C-t s" . exunit-verify-single)
+              ;; Runs all tests in current buffer
+              ("C-c C-t f" . exunit-verify)
+              ;; Runs all tests in current project
+              ("C-c C-t a" . exunit-verify-all)))
+
 (add-hook 'elixir-mode-hook #'smartparens-mode)
+(use-package exunit
+  :ensure t)
 
 ;; LSP setup
 (use-package lsp-mode
@@ -246,28 +255,6 @@
   :hook ((
           go-mode
           elixir-mode). lsp-deferred))
-(defun roonie/mix-run-test (&optional at-point)
-    "If AT-POINT is true it will pass the line number to mix test."
-    (interactive)
-    (let* ((current-file (buffer-file-name))
-           (current-line (line-number-at-pos))
-           (mix-file (concat (projectile-project-root) "mix.exs"))
-           (default-directory (file-name-directory mix-file))
-           (mix-env (concat "MIX_ENV=test ")))
-
-      (if at-point
-          (compile (format "%s mix test %s:%s" mix-env current-file current-line))
-        (compile (format "%s mix test %s" mix-env current-file)))))
-
-  (defun roonie/mix-run-test-file ()
-    "Run mix test over the current file."
-    (interactive)
-    (roonie/mix-run-test nil))
-
-  (defun roonie/mix-run-test-at-point ()
-    "Run mix test at point."
-    (interactive)
-    (roonie/mix-run-test t))
 
 ;; Web
 (use-package web-mode
@@ -374,7 +361,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(elixir-mode flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
+   '(exunit elixir-mode flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
