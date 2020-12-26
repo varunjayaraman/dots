@@ -10,13 +10,11 @@ export SDKMAN_DIR="/home/varun/.sdkman"
 [[ -s "/home/varun/.sdkman/bin/sdkman-init.sh" ]] && source "/home/varun/.sdkman/bin/sdkman-init.sh"
 
 export GOPATH=$HOME/go
-export PATH=$HOME/.cargo/bin:/snap/bin:/usr/local/go/bin:$GOPATH/bin:$PATH
+export PATH=$HOME/.cargo/bin:/snap/bin:/usr/local/go/bin:$GOPATH/bin:$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH
 
 if [[ -n "$ZSH_VERSION" ]]; then
-  echo "Setting prompt to starship prompt"
   eval "$(starship init zsh)"
 
-  echo "Adding asdf completions"
   [ -s "$HOME/.asdf/asdf.sh" ] && \. "$HOME/.asdf/asdf.sh" 
   # append completions to fpath
   fpath=(${ASDF_DIR}/completions $fpath)

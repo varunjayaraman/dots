@@ -65,6 +65,14 @@ download_elixir() {
     install_lang elixir latest
 }
 
+download_ruby() {
+    install_plugin ruby https://github.com/asdf-vm/asdf-ruby.git 
+    ruby_build_version="v20201225"
+    ruby_version="3.0.0"
+    echo "Using a specific ASDF ruby build version $ruby_build_version to install ruby $ruby_version"
+    ASDF_RUBY_BUILD_VERSION=$ruby_build_version install_lang ruby $ruby_version
+    
+}
 install_rust() {
     echo "Installing rust"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -75,4 +83,5 @@ download_erlang
 download_elixir
 install_rust
 download_node
+download_ruby
 

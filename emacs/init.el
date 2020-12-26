@@ -120,6 +120,14 @@
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
+(use-package undo-fu
+  :ensure t
+  :after evil
+  :config
+  ;; (global-undo-tree-mode -1)
+  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
+  (define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -206,14 +214,85 @@
   (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
   (setq compilation-read-command nil)
   :bind (("M-." . godef-jump)))
+(add-hook 'go-mode-hook #'smartparens-mode)
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+(use-package elixir-mode
+  :ensure t
+  :bind (:map elixir-mode-map
+              ("C-c C-t" . roonie/mix-run-test-at-point)))
+(add-hook 'elixir-mode-hook #'smartparens-mode)
 
 ;; LSP setup
 (use-package lsp-mode
   :ensure t
   :init
   (setq lsp-keymap-prefix "s-k")
+  (add-to-list 'exec-path "~/dots/language-servers/elixir")
+  (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred))
+  :config
+  (defun roonie/lsp-format-buffer-quick ()
+    (let ((lsp-response-timeout 2))
+      (lsp-format-buffer)))
+  (defun roonie/lsp-format-on-save ()
+    (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t))
+  :hook ((
+          go-mode
+          elixir-mode). lsp-deferred))
+(defun roonie/mix-run-test (&optional at-point)
+    "If AT-POINT is true it will pass the line number to mix test."
+    (interactive)
+    (let* ((current-file (buffer-file-name))
+           (current-line (line-number-at-pos))
+           (mix-file (concat (projectile-project-root) "mix.exs"))
+           (default-directory (file-name-directory mix-file))
+           (mix-env (concat "MIX_ENV=test ")))
+
+      (if at-point
+          (compile (format "%s mix test %s:%s" mix-env current-file current-line))
+        (compile (format "%s mix test %s" mix-env current-file)))))
+
+  (defun roonie/mix-run-test-file ()
+    "Run mix test over the current file."
+    (interactive)
+    (roonie/mix-run-test nil))
+
+  (defun roonie/mix-run-test-at-point ()
+    "Run mix test at point."
+    (interactive)
+    (roonie/mix-run-test t))
+
+;; Web
+(use-package web-mode
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.css\\'"   . web-mode)
+         ("\\.jsx?\\'"  . web-mode)
+         ("\\.tsx?\\'"  . web-mode)
+         ("\\.json\\'"  . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
+
+(use-package emmet-mode
+  :hook ((html-mode       . emmet-mode)
+         (css-mode        . emmet-mode)
+         (js-mode         . emmet-mode)
+         (js-jsx-mode     . emmet-mode)
+         (typescript-mode . emmet-mode)
+         (web-mode        . emmet-mode))
+  :config
+  (setq emmet-insert-flash-time 0.001) ; effectively disabling it
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (setq-local emmet-expand-jsx-className? t))))
 
 ;; Typescript & Javascript
 (use-package typescript-mode
@@ -237,17 +316,33 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+;; Ruby
+(use-package inf-ruby
+  :ensure t)
+(use-package ruby-mode
+  :ensure t
+  :after lsp-mode
+  :hook ((ruby-mode . lsp-deferred)
+         (ruby-mode . roonie/lsp-format-on-save)))
+(add-hook 'ruby-mode-hook #'smartparens-mode)
 
-;; Optional - provides fancier overlays
-;; (use-package lsp-ui
-  ;; :ensure t
-  ;; :commands lsp-ui-mode)
+(use-package ruby-test-mode
+  :after ruby-mode
+  :diminish ruby-test-mode
+  :config
+  (defun roonie/ruby-test-pretty-error-diffs (old-func &rest args)
+    "Make error diffs prettier."
+    (let ((exit-status (cadr args)))
+      (apply old-func args)
+      (when (> exit-status 0)
+        (diff-mode)
+        ;; Remove self
+        (advice-remove #'compilation-handle-exit #'roonie/ruby-test-pretty-error-diffs))))
+  (defun roonie/ruby-test-pretty-error-diffs-setup (old-func &rest args)
+    "Set up advice to enable pretty diffs when tests fail."
+    (advice-add #'compilation-handle-exit :around #'roonie/ruby-test-pretty-error-diffs)
+    (apply old-func args))
+  (advice-add #'ruby-test-run-command :around #'roonie/ruby-test-pretty-error-diffs-setup))
 
 (use-package lsp-ivy
   :ensure t)
@@ -261,6 +356,12 @@
   (setq company-minimum-prefix-length 1)
   (setq company-tooltip-align-annotations t))
 
+;; Smartparens
+(use-package smartparens
+  :ensure t)
+(require 'smartparens-config)
+(show-smartparens-global-mode +1)
+
 ;; Optional - provides snippet support
 (use-package yasnippet
   :ensure t
@@ -273,7 +374,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
+   '(elixir-mode flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -24,5 +24,7 @@ sudo apt install git \
   silversearcher-ag \
   dconf-cli \
   uuid-runtime \
-  fonts-firacode
+  fonts-firacode \
+  zlib1g-dev
+
 
