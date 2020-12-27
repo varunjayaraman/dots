@@ -240,6 +240,25 @@
 (use-package exunit
   :ensure t)
 
+;; DAP (Debug Adapter Protocol) setup
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  :after lsp-mode
+  ;; enables mouse hover support
+  (dap-tooltip-mode -1)
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode` will use minibuffer
+  (tooltip-mode -1)
+  ;; displays floating panel with debug buttons
+  (dap-ui-controls-mode 1))
+(use-package dap-go
+  :ensure t
+  :after dap-mode)
+
 ;; LSP setup
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
