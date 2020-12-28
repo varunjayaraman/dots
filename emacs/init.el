@@ -213,19 +213,22 @@
   :init
   (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
   (setq compilation-read-command nil)
-  :bind (("M-." . godef-jump)))
-(add-hook 'go-mode-hook #'smartparens-mode)
+  :bind (("M-." . godef-jump))
+  :hook (
+         (go-mode . smartparens-mode)
+         (go-mode . lsp-go-install-save-hooks)))
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; Elixir
 (use-package elixir-mode
   :ensure t
+  :hook ((elixir-mode . lsp-deferred)
+         (elixir-mode . smartparens-mode))
   :bind (:map elixir-mode-map
               ;; Runs test at point
               ("C-c C-t s" . exunit-verify-single)
@@ -234,21 +237,24 @@
               ;; Runs all tests in current project
               ("C-c C-t a" . exunit-verify-all)))
 
-(add-hook 'elixir-mode-hook #'smartparens-mode)
 (use-package exunit
   :ensure t)
 
 ;; LSP setup
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode
-          elixir-mode). lsp-deferred)
+  :hook ((go-mode). lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/dots/language-servers/elixir")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  (defun roonie/lsp-format-buffer-quick ()
+    (let ((lsp-response-timeout 2))
+      (lsp-format-buffer)))
+  (defun roonie/lsp-format-on-save ()
+    (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
 
 ;; Web
 (use-package web-mode
@@ -304,8 +310,8 @@
   :ensure t
   :after lsp-mode
   :hook ((ruby-mode . lsp-deferred)
-         (ruby-mode . roonie/lsp-format-on-save)))
-(add-hook 'ruby-mode-hook #'smartparens-mode)
+         (ruby-mode . roonie/lsp-format-on-save)
+         (ruby-mode . smartparens-mode)))
 
 (use-package ruby-test-mode
   :after ruby-mode
