@@ -240,21 +240,15 @@
 
 ;; LSP setup
 (use-package lsp-mode
-  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook ((go-mode
+          elixir-mode). lsp-deferred)
   :init
-  (setq lsp-keymap-prefix "s-k")
+  (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/dots/language-servers/elixir")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
-  :commands (lsp lsp-deferred)
   :config
-  (defun roonie/lsp-format-buffer-quick ()
-    (let ((lsp-response-timeout 2))
-      (lsp-format-buffer)))
-  (defun roonie/lsp-format-on-save ()
-    (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t))
-  :hook ((
-          go-mode
-          elixir-mode). lsp-deferred))
+  (lsp-enable-which-key-integration t))
 
 ;; Web
 (use-package web-mode
