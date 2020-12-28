@@ -243,28 +243,25 @@
 ;; DAP (Debug Adapter Protocol) setup
 (use-package dap-mode
   :ensure t
-  :after lsp-mode
   :config
-  (dap-mode 1)
-  (dap-ui-mode 1)
-  :after lsp-mode
-  ;; enables mouse hover support
-  (dap-tooltip-mode -1)
-  ;; use tooltips for mouse hover
-  ;; if it is not enabled `dap-mode` will use minibuffer
-  (tooltip-mode -1)
-  ;; displays floating panel with debug buttons
-  (dap-ui-controls-mode 1))
-(use-package dap-go
-  :ensure t
-  :after dap-mode)
+  (require 'dap-node)
+  (require 'dap-go)
+  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+  (dap-go-setup) ;; Automatically installs Go debug adapter if needed
+
+  ;; Bind `C-c l d` to `dap-hydra` for easy access
+  (general-define-key
+   :keymaps 'lsp-mode-map
+   :prefix lsp-keymap-prefix
+   "d" '(dap-hydra t :wk "debugger")))
 
 ;; LSP setup
+(evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((go-mode). lsp-deferred)
   :init
-  (setq lsp-keymap-prefix "C-c l")
+  ;;(setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/dots/language-servers/elixir")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
   :config
