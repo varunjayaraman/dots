@@ -4,6 +4,7 @@
 [alias]
     hash = log --pretty=format:'%h' -n 1
 [core]
-    editor = vim
+    editor = nvim
 [pull]
   rebase = true
+[editor]
