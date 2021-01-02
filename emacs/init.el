@@ -259,10 +259,10 @@
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode). lsp-deferred)
+  :hook ((go-mode . lsp-deferred)
+         (nim-mode. lsp-deferred))
   :init
-  ;;(setq lsp-keymap-prefix "C-c l")
-  (add-to-list 'exec-path "~/dots/language-servers/elixir")
+  (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
   :config
   (lsp-enable-which-key-integration t)

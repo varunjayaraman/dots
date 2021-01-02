@@ -12,6 +12,9 @@ export SDKMAN_DIR="/home/varun/.sdkman"
 export GOPATH=$HOME/go
 export PATH=$HOME/.cargo/bin:/snap/bin:/usr/local/go/bin:$GOPATH/bin:$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH
 
+export PATH=$DOTFILES_PATH/language-servers/elixir:$PATH
+export PATH=$HOME/.nimble/bin:$PATH
+
 if [[ -n "$ZSH_VERSION" ]]; then
   eval "$(starship init zsh)"
 

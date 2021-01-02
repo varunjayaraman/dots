@@ -71,11 +71,15 @@ download_ruby() {
     ruby_version="3.0.0"
     echo "Using a specific ASDF ruby build version $ruby_build_version to install ruby $ruby_version"
     ASDF_RUBY_BUILD_VERSION=$ruby_build_version install_lang ruby $ruby_version
-    
 }
+
 install_rust() {
     echo "Installing rust"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+}
+
+configure_nim() {
+    nimble install nimlsp
 }
 
 download_asdf
@@ -84,4 +88,5 @@ download_elixir
 install_rust
 download_node
 download_ruby
+configure_nim
 

@@ -27,4 +27,4 @@ sudo apt install git \
   fonts-firacode \
   zlib1g-dev
 
-
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
