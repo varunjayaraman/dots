@@ -173,7 +173,9 @@
   ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/workspace/code")
-    (setq projectile-project-search-path '("~/workspace/code"))))
+    (setq projectile-project-search-path '("~/workspace/code")))
+  (when (file-directory-p "~/workspace/code/personal")
+    (setq projectile-project-search-path '("~/workspace/code/personal"))))
 (setq projectile-switch-project-action #'projectile-dired))
 
 (setq ls-lisp-use-insert-directory-program nil)
@@ -239,6 +241,9 @@
 
 (use-package exunit
   :ensure t)
+(use-package nim-mode
+  :ensure t
+  :hook (nim-mode . lsp-deferred))
 
 ;; DAP (Debug Adapter Protocol) setup
 (use-package dap-mode
@@ -259,8 +264,7 @@
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode . lsp-deferred)
-         (nim-mode. lsp-deferred))
+  :hook ((go-mode) . lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
