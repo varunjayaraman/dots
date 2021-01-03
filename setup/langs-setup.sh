@@ -82,11 +82,6 @@ configure_nim() {
     nimble install nimlsp
 }
 
-install_java() {
-  # ASDF does not seem to be very stable for installing java, so we use synaptic
-  sudo apt install openjdk-11-jdk
-}
-
 install_kotlin() {
   install_plugin kotlin https://github.com/asdf-community/asdf-kotlin.git
   kotlin_version"1.4.21"
