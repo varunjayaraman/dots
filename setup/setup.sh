@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# Disable sudo password prompt for entirety of setup
+sudo -i
+
 # This is a dotfile setup implementation for linux/ubuntu. Most of this should be transferrable to Macs or any unix-based system, but I created a
 # separate file because the original implementation I wrote *was* specific to Mac
 

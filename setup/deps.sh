@@ -4,7 +4,7 @@ set -eu
 
 sudo apt update
 
-sudo apt install git \
+sudo apt install -y git \
   build-essential \
   ripgrep \
   tmux \
@@ -25,6 +25,7 @@ sudo apt install git \
   dconf-cli \
   uuid-runtime \
   fonts-firacode \
-  zlib1g-dev
+  zlib1g-dev \
+  openjdk-11-jdk # things depends on java so its good to have
 
 curl https://nim-lang.org/choosenim/init.sh -sSf | sh
