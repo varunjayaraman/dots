@@ -95,6 +95,5 @@ install_rust
 download_node
 download_ruby
 configure_nim
-install_java
 install_kotlin
 
