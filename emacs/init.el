@@ -264,7 +264,9 @@
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode) . lsp-deferred)
+  :hook ((go-mode yaml-mode) . lsp-deferred)
+  :ensure-system-package
+  ((yaml-language-server . "npm install -g yaml-language-server"))
   :init
   (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
