@@ -8,7 +8,6 @@ sudo -i
 
 sudo apt update
 
-
 # We duplicate this information from zshrc because this information might not have been loaded from the zshrc
 DOTFILES_PATH="$HOME/dots"
 setup_path="$DOTFILES_PATH/setup"
