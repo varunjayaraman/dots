@@ -27,5 +27,6 @@ sudo apt install -y git \
   fonts-firacode \
   zlib1g-dev \
   openjdk-11-jdk \
-  htop
+  htop \
+  inotify-tools
 
