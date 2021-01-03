@@ -82,6 +82,12 @@ configure_nim() {
     nimble install nimlsp
 }
 
+install_kotlin() {
+  install_plugin kotlin https://github.com/asdf-community/asdf-kotlin.git
+  kotlin_version"1.4.21"
+  install_lang kotlin $kotlin_version
+}
+
 download_asdf
 download_erlang
 download_elixir
@@ -89,4 +95,5 @@ install_rust
 download_node
 download_ruby
 configure_nim
+install_kotlin
 
