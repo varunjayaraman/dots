@@ -26,6 +26,6 @@ sudo apt install -y git \
   uuid-runtime \
   fonts-firacode \
   zlib1g-dev \
-  openjdk-11-jdk # things depends on java so its good to have
+  openjdk-11-jdk \
+  htop
 
-curl https://nim-lang.org/choosenim/init.sh -sSf | sh
