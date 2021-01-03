@@ -88,12 +88,17 @@ install_kotlin() {
   install_lang kotlin $kotlin_version
 }
 
+install_nim() {
+  curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+}
+
 download_asdf
 download_erlang
 download_elixir
 install_rust
 download_node
 download_ruby
+install_nim
 configure_nim
 install_kotlin
 
