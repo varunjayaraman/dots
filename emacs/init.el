@@ -445,6 +445,13 @@
 
   (eshell-git-prompt-use-theme 'powerline))
 
+(use-package aggressive-indent
+  :ensure t)
+
+(use-package clojure-mode
+  :ensure t
+  :hook ((clojure-mode . smartparens-strict-mode)
+         (clojure-mode . aggressive-indent-mode)))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
