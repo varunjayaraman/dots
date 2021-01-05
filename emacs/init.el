@@ -393,6 +393,9 @@
   :commands yas-minor-mode)
 (setq yas-snippet-dirs (append yas-snippet-dirs
                                '("~/dots/emacs/snippets")))
+(use-package ivy-yasnippet
+  :ensure t
+  :bind (("C-c y" . ivy-yasnippet)))
 
 (yas-reload-all)
 
