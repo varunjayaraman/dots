@@ -221,7 +221,8 @@
   :bind (("M-." . godef-jump))
   :hook (
          (go-mode . smartparens-mode)
-         (go-mode . lsp-go-install-save-hooks)))
+         (go-mode . lsp-go-install-save-hooks)
+         (go-mode . yas-minor-mode)))
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
@@ -233,7 +234,8 @@
 (use-package elixir-mode
   :ensure t
   :hook ((elixir-mode . lsp-deferred)
-         (elixir-mode . smartparens-mode))
+         (elixir-mode . smartparens-mode)
+         (elixir-mode . yas-minor-mode))
   :bind (:map elixir-mode-map
               ;; Runs test at point
               ("C-c C-t s" . exunit-verify-single)
@@ -325,7 +327,8 @@
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
+         (before-save . tide-format-before-save)
+         (typescript-mode . yas-minor-mode)))
 
 (defun setup-tide-mode ()
   (interactive)
@@ -347,7 +350,8 @@
   :after lsp-mode
   :hook ((ruby-mode . lsp-deferred)
          (ruby-mode . roonie/lsp-format-on-save)
-         (ruby-mode . smartparens-mode)))
+         (ruby-mode . smartparens-mode)
+         (ruby-mode . yas-minor-mode)))
 
 (use-package ruby-test-mode
   :after ruby-mode
@@ -388,8 +392,15 @@
 ;; Optional - provides snippet support
 (use-package yasnippet
   :ensure t
-  :commands yas-minor-mode
-  :hook (go-mode . yas-minor-mode))
+  :after popup
+  :commands yas-minor-mode)
+(setq yas-snippet-dirs (append yas-snippet-dirs
+                               '("~/dots/emacs/snippets")))
+(use-package ivy-yasnippet
+  :ensure t
+  :bind (("C-c y" . ivy-yasnippet)))
+
+(yas-reload-all)
 
 (use-package eterm-256color
   :hook (term-mode . eterm-256color-mode))
