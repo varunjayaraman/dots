@@ -41,6 +41,8 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+(use-package use-package-ensure-system-package
+  :ensure t)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -222,7 +224,8 @@
   :hook (
          (go-mode . smartparens-mode)
          (go-mode . lsp-go-install-save-hooks)
-         (go-mode . yas-minor-mode)))
+         (go-mode . yas-minor-mode)
+         (go-mode . lsp)))
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
@@ -269,7 +272,7 @@
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode yaml-mode) . lsp-deferred)
+  :hook ((yaml-mode) . lsp-deferred)
   :ensure-system-package
   ((yaml-language-server . "npm install -g yaml-language-server"))
   :init
