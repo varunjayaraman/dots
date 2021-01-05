@@ -40,6 +40,7 @@ sudo apt install -y git \
   openjdk-11-jdk \
   htop \
   inotify-tools \
-  jq
+  jq \
+  rlwrap
 
 install_docker_compose

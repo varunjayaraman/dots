@@ -92,6 +92,12 @@ install_nim() {
   curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 }
 
+install_clojure() {
+    install_plugin clojure https://github.com/asdf-community/asdf-clojure.git
+    local clojure_version="1.10.1"
+    install_lang clojure $clojure_version
+}
+
 download_asdf
 download_erlang
 download_elixir
@@ -101,4 +107,5 @@ download_ruby
 install_nim
 configure_nim
 install_kotlin
+install_clojure
 
