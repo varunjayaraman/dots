@@ -39,6 +39,7 @@ sudo apt install -y git \
   zlib1g-dev \
   openjdk-11-jdk \
   htop \
-  inotify-tools
+  inotify-tools \
+  jq
 
 install_docker_compose
