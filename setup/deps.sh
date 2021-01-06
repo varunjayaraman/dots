@@ -41,6 +41,9 @@ sudo apt install -y git \
   htop \
   inotify-tools \
   jq \
-  rlwrap
+  rlwrap \
+  libtool \
+  libvterm-dev \
+  cmake
 
 install_docker_compose
