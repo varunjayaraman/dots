@@ -46,3 +46,4 @@ for script in $setup_scripts; do . $setup_path/$script; done
 # Setup asdf global versions
 rm ~/.tool-versions
 sudo ln -s $DOTFILES_PATH/tool-versions $HOME/.tool-versions
+
