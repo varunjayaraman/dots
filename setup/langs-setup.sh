@@ -94,7 +94,7 @@ install_nim() {
 
 install_clojure() {
     install_plugin clojure https://github.com/asdf-community/asdf-clojure.git
-    local clojure_version="1.10.1"
+    local clojure_version="1.10.1.763"
     install_lang clojure $clojure_version
 }
 
