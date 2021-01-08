@@ -466,13 +466,19 @@
   :ensure t)
 
 ;; Clojure
+(use-package flycheck-clj-kondo
+  :ensure t)
 (use-package clojure-mode
-  :ensure t
-  :hook ((clojure-mode . smartparens-strict-mode)
-         (clojure-mode . aggressive-indent-mode)))
+             :ensure t
+             :config
+             :after flycheck-clj-kondo
+             :hook ((clojure-mode . smartparens-strict-mode)
+                    (clojure-mode . aggressive-indent-mode)
+                    ))
 (use-package cider
-  :ensure t
-  :after clojure-mode)
+             :ensure t
+             :hook ((cider-mode-hook . company-mode)
+                    (cider-repl-mode-hook . company-mode)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
