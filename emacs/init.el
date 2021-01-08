@@ -455,17 +455,22 @@
 (use-package aggressive-indent
   :ensure t)
 
+;; Clojure
 (use-package clojure-mode
   :ensure t
   :hook ((clojure-mode . smartparens-strict-mode)
          (clojure-mode . aggressive-indent-mode)))
+(use-package cider
+  :ensure t
+  :after clojure-mode)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(exunit elixir-mode flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
+   '(cider exunit elixir-mode flycheck super-save forge magit counsel-projectile projectile hydra evil-collection evil general helpful ivy-rich which-key rainbow-delimiters doom-modeline doom-themes counsel ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
