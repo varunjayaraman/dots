@@ -317,6 +317,12 @@
               (setq flycheck-check-syntax-automatically '(save mode-enabled))
               (eldoc-mode t)
               (company-mode-on))))
+
+(eval-after-load 'web-mode
+    '(progn
+       (add-hook 'web-mode-hook #'add-node-modules-path)
+       (add-hook 'web-mode-hook #'prettier-js-mode)))
+
 (use-package emmet-mode
   :hook ((html-mode       . emmet-mode)
          (css-mode        . emmet-mode)
@@ -330,6 +336,10 @@
                                (setq-local emmet-expand-jsx-className? t))))
 
 ;; Typescript & Javascript
+(use-package add-node-modules-path
+  :ensure t)
+(use-package prettier-js
+  :ensure t)
 (use-package typescript-mode
   :ensure t)
 (use-package tide
@@ -349,7 +359,7 @@
   (tide-hl-identifier-mode +1)
   (company-mode +1))
 
-(add-hook 'before-save-hook 'tide-format-before-save)
+;; (add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 ;; Ruby
