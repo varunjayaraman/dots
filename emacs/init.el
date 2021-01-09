@@ -217,24 +217,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
-(use-package go-mode
-  :defer t
-  :mode ("\\.go\\'" . go-mode)
-  :init
-  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
-  (setq compilation-read-command nil)
-  :bind (("M-." . godef-jump))
-  :hook (
-         (go-mode . smartparens-mode)
-         (go-mode . lsp-go-install-save-hooks)
-         (go-mode . yas-minor-mode)
-         (go-mode . lsp-deferred)))
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
 ;; Elixir
 (use-package elixir-mode
@@ -252,20 +234,6 @@
 (use-package exunit)
 (use-package nim-mode
   :hook (nim-mode . lsp-deferred))
-
-;; DAP (Debug Adapter Protocol) setup
-(use-package dap-mode
-  :config
-  (require 'dap-node)
-  (require 'dap-go)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-  (dap-go-setup) ;; Automatically installs Go debug adapter if needed
-
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-   :keymaps 'lsp-mode-map
-   :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
 
 ;; LSP setup
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
