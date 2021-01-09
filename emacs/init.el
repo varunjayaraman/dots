@@ -12,6 +12,14 @@
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
 
+;; Add our custom modules to Emac's `load-path`
+(defvar roonie/emacs-dir "~/dots/emacs"
+  "The directory where roonie's custom Emacs config lives.")
+(defvar roonie/core-utils (expand-file-name "dots-core.el" roonie/emacs-dir))
+(defvar roonie/modules-dir (expand-file-name "modules" roonie/emacs-dir)
+  "The directory where all custom modules like languages lives.")
+(add-to-list 'load-path roonie/modules-dir)
+
 ;; Set up visible bell instead of noisy one
 ;; (setq visible-bell t)
 
@@ -457,6 +465,12 @@
 (add-hook 'cider-mode-hook #'company-mode)
 (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
 (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
+
+;; Load core utils
+(load roonie/core-utils)
+
+;; Load modules
+(load (expand-file-name "modules.el" roonie/emacs-dir))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
