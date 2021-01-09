@@ -39,11 +39,11 @@
   t))
 
 (defun roonie/emacs-lisp-mode-defaults ()
-  "Sets up some sensible defaults when editing elisp files."
+  "Set up some sensible defaults when editing elisp files."
   (run-hooks roonie/lisp-coding-hook)
   (roonie/recompile-on-save)
-  (eldoc-mode +1)
-  (rainbow-delimiters-mode +1))
+  (aggressive-indent-mode +1)
+  (eldoc-mode +1))
 
 (setq roonie/emacs-lisp-mode-hook 'roonie/emacs-lisp-mode-defaults)
 
@@ -52,6 +52,7 @@
 
 (add-hook 'emacs-lisp-mode-hook (lambda ()
                                   (run-hooks 'roonie/emacs-lisp-mode-hook)))
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 
 (provide 'dots-emacs-lisp)
 
