@@ -253,17 +253,6 @@
   (defun roonie/lsp-format-on-save ()
     (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
 
-(use-package dap-mode
-  :config
-  ;; (require 'dap-node)
-  (require 'dap-go)
-  ;; (dap-node-setup)
-  (dap-go-setup)
-  (general-define-key
-   :keymaps 'lsp-mode-map
-   :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
-
 ;; Web
 (use-package web-mode
   :mode (("\\.html?\\'" . web-mode)
