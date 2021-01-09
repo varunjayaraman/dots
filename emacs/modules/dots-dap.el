@@ -24,6 +24,9 @@
 
 (require 'use-package)
 (require 'dots-go)
+(require 'lsp-mode)
+(require 'general)
+(require 'hydra)
 
 (use-package dap-mode
   :config
