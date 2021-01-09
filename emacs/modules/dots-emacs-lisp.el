@@ -24,11 +24,31 @@
 ;;; Code:
 
 (require 'dots-lisp)
+(dots/ensure-package 'elisp-slime-nav)
+(dots/ensure-package 'rainbow-delimiters)
+
+(defun roonie/recompile-on-save ()
+  "Recompiles config when saving an elisp file inside the Emacs dir."
+  (add-hook 'after-save-hook
+            (lambda ()
+              (when (and
+                    (string-prefix-p roonie/emacs-dir (file-truename buffer-file-name))
+                    (file-exists-p (byte-compile-dest-file buffer-file-name)))
+              (emacs-lisp-byte-compile)))
+  nil
+  t))
 
 (defun roonie/emacs-lisp-mode-defaults ()
-  (run-hooks roonie/lisp-coding-hook))
+  "Sets up some sensible defaults when editing elisp files."
+  (run-hooks roonie/lisp-coding-hook)
+  (roonie/recompile-on-save)
+  (eldoc-mode +1)
+  (rainbow-delimiters-mode +1))
 
 (setq roonie/emacs-lisp-mode-hook 'roonie/emacs-lisp-mode-defaults)
+
+(dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+  (add-hook hook 'elisp-slime-nav-mode))
 
 (add-hook 'emacs-lisp-mode-hook (lambda ()
                                   (run-hooks 'roonie/emacs-lisp-mode-hook)))

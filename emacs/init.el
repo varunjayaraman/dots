@@ -467,6 +467,8 @@
 (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 
 ;; Load core utils
+(use-package elisp-slime-nav
+  :ensure t)
 (load roonie/core-utils)
 
 ;; Load modules
