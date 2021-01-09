@@ -12,6 +12,14 @@
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
 
+;; Add our custom modules to Emac's `load-path`
+(defvar roonie/emacs-dir "~/dots/emacs"
+  "The directory where roonie's custom Emacs config lives.")
+(defvar roonie/core-utils (expand-file-name "dots-core.el" roonie/emacs-dir))
+(defvar roonie/modules-dir (expand-file-name "modules" roonie/emacs-dir)
+  "The directory where all custom modules like languages lives.")
+(add-to-list 'load-path roonie/modules-dir)
+
 ;; Set up visible bell instead of noisy one
 ;; (setq visible-bell t)
 
@@ -42,7 +50,7 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 (use-package use-package-ensure-system-package
-  :ensure t)
+  :after use-package)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -82,7 +90,6 @@
 
 (use-package doom-themes)
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
 
@@ -123,7 +130,6 @@
     "tt" '(counsel-load-theme :which-key "choose theme"))
 
   (use-package undo-fu
-    :ensure t
     :after evil
     :config
     ;; (global-undo-tree-mode -1)
@@ -198,7 +204,6 @@
 (setq auth-sources '("~/.authinfo"))
 
 (use-package super-save
-  :ensure t
   :config
   (super-save-mode +1))
 
@@ -207,35 +212,14 @@
 (use-package org)
 
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
-(use-package go-mode
-  :defer t
-  :ensure t
-  :mode ("\\.go\\'" . go-mode)
-  :init
-  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
-  (setq compilation-read-command nil)
-  :bind (("M-." . godef-jump))
-  :hook (
-         (go-mode . smartparens-mode)
-         (go-mode . lsp-go-install-save-hooks)
-         (go-mode . yas-minor-mode)
-         (go-mode . lsp-deferred)))
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
 ;; Elixir
 (use-package elixir-mode
-  :ensure t
   :hook ((elixir-mode . lsp-deferred)
          (elixir-mode . smartparens-mode)
          (elixir-mode . yas-minor-mode))
@@ -247,26 +231,9 @@
               ;; Runs all tests in current project
               ("C-c C-t a" . exunit-verify-all)))
 
-(use-package exunit
-  :ensure t)
+(use-package exunit)
 (use-package nim-mode
-  :ensure t
   :hook (nim-mode . lsp-deferred))
-
-;; DAP (Debug Adapter Protocol) setup
-(use-package dap-mode
-  :ensure t
-  :config
-  (require 'dap-node)
-  (require 'dap-go)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-  (dap-go-setup) ;; Automatically installs Go debug adapter if needed
-
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-   :keymaps 'lsp-mode-map
-   :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
 
 ;; LSP setup
 (evil-define-key 'normal lsp-mode-map (kbd "C-c l") lsp-command-map)
@@ -285,17 +252,6 @@
       (lsp-format-buffer)))
   (defun roonie/lsp-format-on-save ()
     (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
-
-(use-package dap-mode
-  :config
-  ;; (require 'dap-node)
-  (require 'dap-go)
-  ;; (dap-node-setup)
-  (dap-go-setup)
-  (general-define-key
-   :keymaps 'lsp-mode-map
-   :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
 
 ;; Web
 (use-package web-mode
@@ -336,14 +292,10 @@
                                (setq-local emmet-expand-jsx-className? t))))
 
 ;; Typescript & Javascript
-(use-package add-node-modules-path
-  :ensure t)
-(use-package prettier-js
-  :ensure t)
-(use-package typescript-mode
-  :ensure t)
+(use-package add-node-modules-path)
+(use-package prettier-js)
+(use-package typescript-mode)
 (use-package tide
-  :ensure t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
@@ -363,10 +315,8 @@
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 ;; Ruby
-(use-package inf-ruby
-  :ensure t)
+(use-package inf-ruby)
 (use-package ruby-mode
-  :ensure t
   :after lsp-mode
   :hook ((ruby-mode . lsp-deferred)
          (ruby-mode . roonie/lsp-format-on-save)
@@ -391,12 +341,10 @@
     (apply old-func args))
   (advice-add #'ruby-test-run-command :around #'roonie/ruby-test-pretty-error-diffs-setup))
 
-(use-package lsp-ivy
-  :ensure t)
+(use-package lsp-ivy)
 
 ;; Company mode is a standard completion package that works with lsp-mode
 (use-package company
-  :ensure t
   :config
   ;; Optionally enable completion as you type behavior
   (setq company-idle-delay 0)
@@ -404,20 +352,17 @@
   (setq company-tooltip-align-annotations t))
 
 ;; Smartparens
-(use-package smartparens
-  :ensure t)
+(use-package smartparens)
 (require 'smartparens-config)
 (show-smartparens-global-mode +1)
 
 ;; Optional - provides snippet support
 (use-package yasnippet
-  :ensure t
   :after popup
   :commands yas-minor-mode)
 (setq yas-snippet-dirs (append yas-snippet-dirs
                                '("~/dots/emacs/snippets")))
 (use-package ivy-yasnippet
-  :ensure t
   :bind (("C-c y" . ivy-yasnippet)))
 
 (yas-reload-all)
@@ -427,7 +372,6 @@
 
 ;; Configure vterm
 (use-package vterm
-  :ensure t
   :commands vterm
   :config
   (setq vterm-shell "zsh")
@@ -462,26 +406,14 @@
 
   (eshell-git-prompt-use-theme 'powerline))
 
-(use-package aggressive-indent
-  :ensure t)
+(use-package aggressive-indent)
 
-;; Clojure
-(use-package flycheck-clj-kondo
-  :ensure t)
-(use-package clojure-mode
-             :ensure t
-             :config
-             :after flycheck-clj-kondo
-             :hook ((clojure-mode . smartparens-strict-mode)
-                    (clojure-mode . aggressive-indent-mode)
-                    ))
-(use-package cider
-             :ensure t)
+;; Load core utils
+(use-package elisp-slime-nav)
+(load roonie/core-utils)
 
-(add-hook 'cider-repl-mode-hook #'company-mode)
-(add-hook 'cider-mode-hook #'company-mode)
-(add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
-(add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
+;; Load modules
+(load (expand-file-name "modules.el" roonie/emacs-dir))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
