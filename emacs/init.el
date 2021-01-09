@@ -352,8 +352,7 @@
   (setq company-tooltip-align-annotations t))
 
 ;; Smartparens
-(use-package smartparens
-  :ensure t)
+(use-package smartparens)
 (require 'smartparens-config)
 (show-smartparens-global-mode +1)
 
@@ -407,12 +406,10 @@
 
   (eshell-git-prompt-use-theme 'powerline))
 
-(use-package aggressive-indent
-  :ensure t)
+(use-package aggressive-indent)
 
 ;; Load core utils
-(use-package elisp-slime-nav
-  :ensure t)
+(use-package elisp-slime-nav)
 (load roonie/core-utils)
 
 ;; Load modules
