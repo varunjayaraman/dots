@@ -476,9 +476,12 @@
                     (clojure-mode . aggressive-indent-mode)
                     ))
 (use-package cider
-             :ensure t
-             :hook ((cider-mode-hook . company-mode)
-                    (cider-repl-mode-hook . company-mode)))
+             :ensure t)
+
+(add-hook 'cider-repl-mode-hook #'company-mode)
+(add-hook 'cider-mode-hook #'company-mode)
+(add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+(add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
