@@ -5,6 +5,7 @@ set -eu
 install_docker_compose() {
   local docker_version="1.27.4"
   local path_to_docker_compose=/usr/local/bin/docker-compose
+  if [[ uname = 
   sudo curl -L "https://github.com/docker/compose/releases/download/$docker_version/docker-compose-$(uname -s)-$(uname -m)" -o $path_to_docker_compose
   sudo chmod +x $path_to_docker_compose
 
