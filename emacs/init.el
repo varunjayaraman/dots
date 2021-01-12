@@ -1,4 +1,4 @@
-;; This buffer is for text that is not saved, and for Lisp evaluation.
+ ;; This buffer is for text that is not saved, and for Lisp evaluation.
 ;; To create a file, visit it with C-x C-f and enter text in its buffer.
 
 ;; Many old emacs libs depend on `cl` instead of `cl-lib`, and in Emacs-27 `cl` now carries a deprecation warning. We are just disabling this
@@ -11,6 +11,7 @@
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
+(setq dired-dwim-target t)
 
 ;; Add our custom modules to Emac's `load-path`
 (defvar roonie/emacs-dir "~/dots/emacs"
@@ -185,6 +186,8 @@
     :init
     (when (file-directory-p "~/workspace/code")
       (setq projectile-project-search-path '("~/workspace/code")))
+    (when (file-directory-p "~/workspace/code/staffbase")
+      (setq projectile-project-search-path '("~/workspace/code/staffbase")))
     (when (file-directory-p "~/workspace/code/personal")
       (setq projectile-project-search-path '("~/workspace/code/personal"))))
   (setq projectile-switch-project-action #'projectile-dired))
