@@ -265,30 +265,19 @@
     (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
 
 ;; Web
-(use-package web-mode
-  :mode (("\\.html?\\'" . web-mode)
-         ("\\.css\\'"   . web-mode)
-         ("\\.jsx?\\'"  . web-mode)
-         ("\\.tsx?\\'"  . web-mode)
-         ("\\.json\\'"  . web-mode))
-  :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (tide-setup)
-              (flycheck-mode t)
-              (setq flycheck-check-syntax-automatically '(save mode-enabled))
-              (eldoc-mode t)
-              (company-mode-on))))
+(use-package json-mode
+  :mode "\\.json$")
 
-(eval-after-load 'web-mode
-    '(progn
-       (add-hook 'web-mode-hook #'add-node-modules-path)
-       (add-hook 'web-mode-hook #'prettier-js-mode)))
+(use-package prettier
+  :hook
+  ((typescript-mode json-mode) . prettier-mode))
+
+(use-package typescript-mode
+  :mode "\\.tsx?$"
+  :hook
+  (typescript-mode . lsp-deferred)
+  :custom
+  (typescript-indent-level 2))
 
 (use-package emmet-mode
   :hook ((html-mode       . emmet-mode)
@@ -303,27 +292,6 @@
                                (setq-local emmet-expand-jsx-className? t))))
 
 ;; Typescript & Javascript
-(use-package add-node-modules-path)
-(use-package prettier-js)
-(use-package typescript-mode)
-(use-package tide
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)
-         (typescript-mode . yas-minor-mode)))
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
-
-;; (add-hook 'before-save-hook 'tide-format-before-save)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 ;; Ruby
 (use-package inf-ruby)
