@@ -267,17 +267,41 @@
 ;; Web
 (use-package json-mode
   :mode "\\.json$")
+(use-package web-mode  :ensure t
+  :mode (("\\.js\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode)
+         ("\\.ts\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.html\\'" . web-mode)
+         ("\\.vue\\'" . web-mode)
+	     ("\\.json\\'" . web-mode))
+  :commands web-mode
+  :hook ((web-mode . lsp-deferred))
+  :config
+  (setq company-tooltip-align-annotations t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-enable-part-face t)
+  (setq web-mode-content-types-alist
+	    '(("jsx" . "\\.js[x]?\\'")))
+  )
+(use-package add-node-modules-path)
 
+(eval-after-load 'web-mode
+  '(progn
+     (add-hook 'web-mode-hook #'add-node-modules-path)
+     (add-hook 'web-mode-hook #'prettier-mode)))
 (use-package prettier
   :hook
   ((typescript-mode json-mode) . prettier-mode))
 
-(use-package typescript-mode
-  :mode "\\.tsx?$"
-  :hook
-  (typescript-mode . lsp-deferred)
-  :custom
-  (typescript-indent-level 2))
+;; (use-package typescript-mode
+;;   :mode "\\.ts$"
+;;   :hook
+;;   (typescript-mode . lsp-deferred)
+;;   :custom
+;;   (typescript-indent-level 2))
 
 (use-package emmet-mode
   :hook ((html-mode       . emmet-mode)
