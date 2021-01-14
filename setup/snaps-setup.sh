@@ -8,5 +8,6 @@ sudo snap install slack --classic
 sudo snap install google-chrome
 sudo snap install --edge 1password # change once 1password on linux is stabled
 sudo snap install spotify
+sudo snap install todoist
 
 sudo snap refresh
