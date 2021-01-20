@@ -263,6 +263,32 @@
       (lsp-format-buffer)))
   (defun roonie/lsp-format-on-save ()
     (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
+(use-package lsp-ui
+  :after (lsp-mode)
+  :commands lsp-ui-doc-hide
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references)
+              ("C-c u" . lsp-ui-imenu))
+  :config
+  (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
+  ;; `C-g'to close doc
+  (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
+  :init (setq lsp-ui-doc-enable t
+              lsp-ui-doc-use-webkit nil
+              lsp-ui-doc-header nil
+              lsp-ui-doc-delay 0.2
+              lsp-ui-doc-include-signature t
+              lsp-ui-doc-alignment 'at-point
+              lsp-ui-doc-use-childframe nil
+              lsp-ui-doc-border (face-foreground 'default)
+              lsp-ui-peek-enable t
+              lsp-ui-peek-show-directory t
+              lsp-ui-sideline-update-mode 'line
+              lsp-ui-sideline-enable t
+              lsp-ui-sideline-show-code-actions t
+              lsp-ui-sideline-show-hover nil
+              lsp-ui-sideline-ignore-duplicate t))
 
 ;; Web
 (use-package json-mode

@@ -8,3 +8,5 @@
 [pull]
   rebase = true
 [editor]
+[github]
+	user = varunjayaraman
