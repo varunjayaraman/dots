@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Resources zshrc
 function rz() {
@@ -61,4 +61,35 @@ function delete_all_branches_but_master() {
 
 function validate_cert() {
   openssl x509 -in $1 -text -noout
+}
+
+# Utility functions to ease PATH-building syntax
+function path_prepend() {
+    local path_search_dir=$1
+    export PATH="${path_search_dir}:${PATH}"
+}
+
+function path_append() {
+    local path_search_dir=$1
+    export PATH="${PATH}:${path_search_dir}"
+}
+
+function use_graalvm() {
+  case $(uname -s) in
+    Darwin)
+      export JAVA_HOME=/opt/graalvm/Contents/Home
+      ;;
+    Linux)
+      export JAVA_HOME=/opt/graalvm
+      ;;
+  esac
+
+  path_prepend ${JAVA_HOME}/bin
+  java -version
+}
+
+function use_java() {
+  export JAVA_HOME=$(/usr/libexec/java_home -v 14)  # Mac OSX java trick
+  path_prepend ${JAVA_HOME}/bin
+  java -version
 }
