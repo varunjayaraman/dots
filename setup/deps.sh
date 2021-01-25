@@ -42,6 +42,7 @@ sudo apt install -y git \
   rlwrap \
   libtool \
   libvterm-dev \
-  cmake
+  cmake \
+  pgcli
 
 install_docker_compose
