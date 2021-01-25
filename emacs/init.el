@@ -302,7 +302,9 @@
          ("\\.vue\\'" . web-mode)
 	     ("\\.json\\'" . web-mode))
   :commands web-mode
-  :hook ((web-mode . lsp-deferred))
+  :hook ((web-mode . lsp-deferred)
+         (web-mode . aggressive-indent-mode)
+         (web-mode . smartparens-mode))
   :config
   (setq company-tooltip-align-annotations t)
   (setq web-mode-markup-indent-offset 2)
@@ -318,6 +320,7 @@
   '(progn
      (add-hook 'web-mode-hook #'add-node-modules-path)
      (add-hook 'web-mode-hook #'prettier-mode)))
+
 (use-package prettier
   :hook
   ((typescript-mode json-mode) . prettier-mode))
