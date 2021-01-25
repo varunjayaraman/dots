@@ -27,7 +27,7 @@
 (add-hook 'clojure-mode-hook 'lsp)
 (add-hook 'clojurescript-mode-hook 'lsp)
 (add-hook 'clojurec-mode-hook 'lsp)
-(setq lsp-clojure-custom-server-command '("bash" "-c" "/opt/clojure-lsp"))
+(setq lsp-clojure-custom-server-command '("bash" "-c" "~/dots/language-servers/clojure-lsp"))
 ;; (add-hook 'cider-repl-mode-hook #'company-mode)
 ;; (add-hook 'cider-mode-hook #'company-mode)
 ;; (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
