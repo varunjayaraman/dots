@@ -30,9 +30,7 @@
 
 (use-package dap-mode
   :config
-  ;; (require 'dap-node)
   (require 'dap-go)
-  ;; (dap-node-setup)
   (dap-go-setup)
   (general-define-key
    :keymaps 'lsp-mode-map

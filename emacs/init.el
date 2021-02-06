@@ -36,6 +36,7 @@
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;; (setq current-prefix-arg "C-u")
 
 ;; Configure backups to go to a directory outside of where files are being edited.
 ;; Otherwise they show up in version control and need to be explicitly gitignored
@@ -149,7 +150,7 @@
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t) ;; remaps C-u to scroll instead of doing universal argument
+    (setq evil-want-C-u-scroll nil) ;; remaps C-u to scroll instead of doing universal argument
     (setq evil-want-C-i-jump nil)
     :config
     (evil-mode 1)
@@ -263,6 +264,7 @@
       (lsp-format-buffer)))
   (defun roonie/lsp-format-on-save ()
     (add-hook 'before-save-hook #'roonie/lsp-format-buffer-quick nil t)))
+
 (use-package lsp-ui
   :after (lsp-mode)
   :commands lsp-ui-doc-hide

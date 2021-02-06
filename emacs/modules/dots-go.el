@@ -1,12 +1,10 @@
-;;; package --- dots-go.el
+;;; Package --- dots-go.el
+
+;;; Code lol
 
 (use-package go-mode
-  :defer t
-  :mode ("\\.go\\'" . go-mode)
   :init
-  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
-  (setq compilation-read-command nil)
-  :bind (("M-." . godef-jump))
+  (setq lsp-go-build-flags ["-tags=integration"])
   :hook (
          (go-mode . smartparens-mode)
          (go-mode . lsp-go-install-save-hooks)
