@@ -62,3 +62,24 @@ function delete_all_branches_but_master() {
 function validate_cert() {
   openssl x509 -in $1 -text -noout
 }
+
+function path_prepend() {
+    local path_search_dir=$1
+    export PATH="${path_search_dir}:${PATH}"
+}
+function path_append() {
+    local path_search_dir=$1
+    export PATH="${PATH}:${path_search_dir}"
+}
+
+function use_java() {
+  export JAVA_HOME=/usr
+  path_prepend ${JAVA_HOME}/bin
+  java -version
+}
+
+function use_graalvm() {
+  export JAVA_HOME=$GRAALVM_HOME
+  path_prepend ${JAVA_HOME}/bin
+  java -version
+}

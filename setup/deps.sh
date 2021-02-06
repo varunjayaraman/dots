@@ -35,7 +35,7 @@ sudo apt install -y git \
   uuid-runtime \
   fonts-firacode \
   zlib1g-dev \
-  openjdk-11-jdk \
+  openjdk-13-jre \
   htop \
   inotify-tools \
   jq \
@@ -43,6 +43,13 @@ sudo apt install -y git \
   libtool \
   libvterm-dev \
   cmake \
-  pgcli
+  pgcli \
+  libwxgtk3.0-gtk3-dev \
+  xsltproc \
+  fop \
+  libxml2-utils \
+  unixodbc-dev \
+  libz-dev \
+  zlib1g-dev
 
 install_docker_compose

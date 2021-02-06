@@ -14,6 +14,9 @@ export PATH=$HOME/.cargo/bin:/snap/bin:/usr/local/go/bin:$GOPATH/bin:$HOME/.loca
 
 export PATH=$DOTFILES_PATH/language-servers/elixir:$PATH
 export PATH=$HOME/.nimble/bin:$PATH
+export GRAALVM_HOME=$HOME/.asdf/installs/graalvm/21.0.0-java11
+export PATH=$GRAALVM_HOME/bin:$PATH
+export JAVA_HOME=$GRAALVM_HOME
 
 if [[ -n "$ZSH_VERSION" ]]; then
   eval "$(starship init zsh)"
