@@ -2,20 +2,39 @@
 
 echo "Installing neovim and symlinking config files"
 
-sudo add-apt-repository ppa:neovim-ppa/stable
+cd $(mktemp -d)
+git clone https://github.com/neovim/neovim --depth 1
+cd neovim
+sudo make CMAKE_BUILD_TYPE=Release install
+cd ..
+rm -rf neovim
 
-sudo add-apt-repository ppa:neovim-ppa/unstable
+# install nerdfonts
+# you can choose another at: https://www.nerdfonts.com/font-downloads
+echo "[-] Downloading fonts [-]"
 
-sudo apt update
+# JetBrainsMono
+echo "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip"
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip
+unzip JetBrainsMono.zip -d ~/.local/share/fonts
+rm JetBrainsMono.zip
 
-sudo apt install neovim
+# Go Mono
+echo "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Go-Mono.zip"
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Go-Mono.zip
+unzip Go-Mono.zip -d ~/.local/share/fonts
+rm Go-Mono.zip
 
-neovim_dir="$HOME/.config/nvim"
-mkdir -p $neovim_dir
-touch $neovim_dir/init.vm
-curl -fLo $neovim_dir/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# FiraCode
+echo "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip"
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+unzip FiraCode.zip -d ~/.local/share/fonts
+rm FiraCode.zip
 
-echo "Creating symlink for .vimrc"
-if [ ! -e $neovim_dir/init.vim ]; then
-  sudo ln -s $DOTFILES_PATH/nvimrc $neovim_dir/init.vim
-fi
+fc-cache -fv
+
+# LunarVim depends on the following:
+
+pip3 install ranger-fm ueberzug pynvim neovim-remote
+
+echo "done!"
