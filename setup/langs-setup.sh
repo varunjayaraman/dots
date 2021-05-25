@@ -1,4 +1,4 @@
-#!/usr/env/bin/zsh
+#!/usr/bin/zsh
 
 download_asdf() {
     ASDF_VERSION="v0.8.0"
@@ -74,7 +74,7 @@ install_nim() {
 }
 
 manage_asdf_plugins() {
-    install_plugin_erlang
+    install_plugin erlang
     install_lang erlang
 
     install_plugin elixir

@@ -52,4 +52,4 @@ sudo apt install -y git \
   libz-dev \
   zlib1g-dev
 
-install_docker_compose
+# install_docker_compose

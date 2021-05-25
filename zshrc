@@ -9,15 +9,6 @@ source $DOTFILES_PATH/functions.sh
 export SDKMAN_DIR="/home/varun/.sdkman"
 [[ -s "/home/varun/.sdkman/bin/sdkman-init.sh" ]] && source "/home/varun/.sdkman/bin/sdkman-init.sh"
 
-export GOPATH=$HOME/go
-export PATH=$HOME/.cargo/bin:/snap/bin:/usr/local/go/bin:$GOPATH/bin:$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH
-
-export PATH=$DOTFILES_PATH/language-servers/elixir:$PATH
-export PATH=$HOME/.nimble/bin:$PATH
-export GRAALVM_HOME=$HOME/.asdf/installs/graalvm/21.0.0-java11
-export PATH=$GRAALVM_HOME/bin:$PATH
-export JAVA_HOME=$GRAALVM_HOME
-
 if [[ -n "$ZSH_VERSION" ]]; then
   eval "$(starship init zsh)"
 
