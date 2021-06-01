@@ -50,6 +50,8 @@ sudo apt install -y git \
   libxml2-utils \
   unixodbc-dev \
   libz-dev \
-  zlib1g-dev
+  zlib1g-dev \
+  gscan2pdf \
+  imagemagick
 
 # install_docker_compose
