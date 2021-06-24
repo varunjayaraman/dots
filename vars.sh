@@ -1,3 +1,3 @@
 #!/bin/bash
 
-export HMX=~/workspace/healthmetrix
+export GEM_HOME=~/.gem
