@@ -2,20 +2,18 @@
 
 echo "Installing neovim and symlinking config files"
 
-sudo add-apt-repository ppa:neovim-ppa/stable
+cd $(mktemp -d)
+git clone https://github.com/neovim/neovim --depth 1
+cd neovim
+sudo make CMAKE_BUILD_TYPE=Release install
+cd ..
+rm -rf neovim
 
-sudo add-apt-repository ppa:neovim-ppa/unstable
+ln -s $DOTFILES_PATH/nvim ~/.config/nvim
 
-sudo apt update
+# setup packer
+echo "setting up packer, a plugin manager for neovim"
+git clone https://github.com/wbthomason/packer.nvim \
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-sudo apt install neovim
-
-neovim_dir="$HOME/.config/nvim"
-mkdir -p $neovim_dir
-touch $neovim_dir/init.vm
-curl -fLo $neovim_dir/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-echo "Creating symlink for .vimrc"
-if [ ! -e $neovim_dir/init.vim ]; then
-  sudo ln -s $DOTFILES_PATH/nvimrc $neovim_dir/init.vim
-fi
+echo "done!"
