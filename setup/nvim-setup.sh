@@ -9,8 +9,11 @@ sudo make CMAKE_BUILD_TYPE=Release install
 cd ..
 rm -rf neovim
 
-# LunarVim depends on the following:
+ln -s $DOTFILES_PATH/nvim ~/.config/nvim
 
-pip3 install ranger-fm ueberzug pynvim neovim-remote
+# setup packer
+echo "setting up packer, a plugin manager for neovim"
+git clone https://github.com/wbthomason/packer.nvim \
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 echo "done!"

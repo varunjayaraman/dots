@@ -15,6 +15,7 @@ sudo apt update
 
 sudo apt install -y git \
   build-essential \
+  libreadline-dev \
   ripgrep \
   tmux \
   zsh \
@@ -76,6 +77,7 @@ unzip FiraCode.zip -d ~/.local/share/.fonts
 rm FiraCode.zip
 
 fc-cache -fv
+
 echo "done!"
 
 # install_docker_compose
