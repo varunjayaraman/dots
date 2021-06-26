@@ -52,7 +52,8 @@ sudo apt install -y git \
   unixodbc-dev \
   libz-dev \
   zlib1g-dev \
-  libxext-dev
+  libxext-dev \
+  ninja-build
 
 # install nerdfonts
 # you can choose another at: https://www.nerdfonts.com/font-downloads
