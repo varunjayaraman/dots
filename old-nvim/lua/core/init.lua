@@ -27,8 +27,6 @@ end
 
 local load_core = function()
   disable_distribution_plugins()
-  require("plugins.statusline")
-  require("colorizer").setup()
   require('core.keymap')
   require('core.options')
   require("plugins")

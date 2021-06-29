@@ -1,11 +1,9 @@
 local global = require 'core.global'
-local lspconfig = rqeuire'lspconfig'
 local M = {}
 
 function on_attach(client, bufnr)
   local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
+    vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
@@ -30,8 +28,7 @@ function on_attach(client, bufnr)
   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-
-  -- Set some keybinds conditional on server capabilities
+-- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
@@ -55,24 +52,49 @@ M.config = function()
   })
 
 
-  lspconfig.sumneko_lua.setup {
-    cmd = {
-      global.home.."/.config/lua-language-server/bin/Linux/lua-language-server",
-      "-E",
-      global.home.."/.config/lua-language-server/main.lua"
-    };
-    settings = {
-      Lua = {
-        diagnostics = {
-          enable = true,
-          globals = {"vim","packer_plugins"}
-        },
-        runtime = {version = "LuaJIT"},
-        workspace = {
-          library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
-        },
+  local function setup_servers()
+    require "lspinstall".setup()
+    local vim = vim
+    local lspconf = require("lspconfig")
+    -- local servers = require "lspinstall".installed_servers()
+
+    lspconfig.sumneko_lua.setup {
+      cmd = {
+        global.home.."/.config/lua-language-server/bin/Linux/lua-language-server",
+        "-E",
+        global.home.."/.config/lua-language-server/main.lua"
       },
+      settings = {
+        Lua = {
+          diagnostics = {
+            enable = true,
+            globals = {"vim","packer_plugins"}
+          },
+          runtime = {version = "LuaJIT"},
+          workspace = {
+            library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
+          },
+        },
+        on_attach = on_attach
+      }
     }
-  }
+
+    servers = {"go"}
+
+    for _, lang in pairs(servers) do
+      lspconf[lang].setup {
+        on_attach = on_attach,
+        root_dir = vim.loop.cwd
+      }
+    end
+  end
+
+  require "lspinstall".post_install_hook = function ()
+    setup_servers()
+    vim.cmd("bufdo e") -- triggers FileType autocmd that starts the server
+  end
+
+  setup_servers()
 end
+
 return M

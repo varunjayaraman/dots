@@ -18,7 +18,8 @@ M.config = function()
         source = {
             buffer = {kind = "﬘", true},
             vsnip = {kind = "﬌"},
-            nvim_lsp = true
+            nvim_lsp = true,
+            nvim_lua = true,
         }
     }
 end

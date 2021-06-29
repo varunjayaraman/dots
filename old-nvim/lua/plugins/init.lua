@@ -2,10 +2,22 @@ local packer = require("packer")
 
 return packer.startup(function()
   use {"wbthomason/packer.nvim"}
-  use "glepnir/galaxyline.nvim"
-  use {'glepnir/zephyr-nvim', config = [[vim.cmd('colorscheme zephyr')]]}
+  use { 
+    "glepnir/galaxyline.nvim",
+    config = function() require('plugins.statusline') end
+  }
+
+  use { 'glepnir/zephyr-nvim', config = [[vim.cmd('colorscheme zephyr')]]}
+
   use "kyazdani42/nvim-web-devicons"
-  use "norcalli/nvim-colorizer.lua"
+
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end
+  }
+
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
@@ -31,7 +43,7 @@ return packer.startup(function()
     "neovim/nvim-lspconfig",
     event = "BufRead",
     config = function()
-      require("dots_lsp_config").config()
+      require("plugins.lsp_config").config()
     end
   }
 end)
