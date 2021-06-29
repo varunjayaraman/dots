@@ -58,28 +58,28 @@ M.config = function()
     local lspconf = require("lspconfig")
     -- local servers = require "lspinstall".installed_servers()
 
-    lspconfig.sumneko_lua.setup {
+    lspconf.sumneko_lua.setup {
       cmd = {
         global.home.."/.config/lua-language-server/bin/Linux/lua-language-server",
         "-E",
         global.home.."/.config/lua-language-server/main.lua"
-      },
+      };
       settings = {
         Lua = {
           diagnostics = {
-            enable = true,
+            enable = true;
             globals = {"vim","packer_plugins"}
-          },
-          runtime = {version = "LuaJIT"},
+          };
+          runtime = {version = "LuaJIT"};
           workspace = {
             library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
-          },
-        },
-        on_attach = on_attach
-      }
+          };
+        };
+      };
+      on_attach = on_attach;
     }
 
-    servers = {"go"}
+    local servers = {"go"}
 
     for _, lang in pairs(servers) do
       lspconf[lang].setup {
