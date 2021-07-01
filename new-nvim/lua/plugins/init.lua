@@ -37,4 +37,9 @@ return packer.startup(function()
     event = "BufRead",
     config = require("plugins.lsp").config,
   }
+
+  use {
+     "windwp/nvim-autopairs",
+     config = require("plugins.autopairs").config
+  }
 end)
