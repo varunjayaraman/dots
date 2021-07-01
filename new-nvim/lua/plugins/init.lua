@@ -34,7 +34,7 @@ return packer.startup(function()
 
   use {
     "neovim/nvim-lspconfig",
+    event = "BufRead",
     config = require("plugins.lsp").config,
-    requires = {"kabouzeid/nvim-lspinstall"}
   }
 end)
