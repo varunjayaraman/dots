@@ -1,19 +1,18 @@
 local M = {}
+local format = require("plugins.lsp.format")
+local api = vim.api
+
 
 local function on_attach(client, bufnr)
-  local lspconf = require("lspconfig")
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  if client.resolved_capabilities.document_formatting then
+    format.lsp_before_save()
+  end
+  api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
+
 M.config = function()
-  local lspinstall = require'lspinstall'
+  local lspinstall =  require'lspinstall'
   lspinstall.setup()
   local servers = lspinstall.installed_servers()
   local lspconf = require("lspconfig")
@@ -26,8 +25,7 @@ M.config = function()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
   -- LSP Enable diagnostics
-  vim.lsp.handlers["textDocument/publishDiagnostics"] =
-  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = false,
     underline = true,
     signs = true,
@@ -63,6 +61,7 @@ M.config = function()
       }
     }
   })
+
 end
 
 return M

@@ -35,7 +35,7 @@ return packer.startup(function()
   use {
     "neovim/nvim-lspconfig",
     event = "BufRead",
-    config = require("plugins.lsp").config,
+    config = require("plugins.lsp").config
   }
 
 use {
