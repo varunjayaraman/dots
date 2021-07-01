@@ -19,3 +19,16 @@ cd luarocks-$luarocks_version
 cd $DOTFILES_PATH/setup
 rm luarocks-$luarocks_version.tar.gz
 rm -rf luarocks-$luarocks_version
+
+# Install lua language server
+sudo apt update
+sudo apt install ninja-build
+git clone https://github.com/sumneko/lua-language-server
+cd lua-language-server
+git submodule update --init --recursive
+cd 3rd/luamake
+ninja -f ninja/linux.ninja
+cd ../..
+./3rd/luamake/luamake rebuild
+cd $DOTFILES_PATH/setup
+

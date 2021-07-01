@@ -1,4 +1,4 @@
- ;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; This buffer is for text that is not saved, and for Lisp evaluation.
 ;; To create a file, visit it with C-x C-f and enter text in its buffer.
 
 ;; Many old emacs libs depend on `cl` instead of `cl-lib`, and in Emacs-27 `cl` now carries a deprecation warning. We are just disabling this

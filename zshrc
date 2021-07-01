@@ -32,3 +32,5 @@ vterm_printf(){
         printf "\e]%s\e\\" "$1"
     fi
 }
+
+alias luamake=/home/roonie/.config/lua-language-server/3rd/luamake/luamake
