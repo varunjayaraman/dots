@@ -1,4 +1,4 @@
-;;; Package --- dots-go.el
+;;; PACKAGE --- dots-go.el
 
 ;;; Code lol
 

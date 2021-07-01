@@ -24,9 +24,6 @@ function hard_docker_reset() {
   docker rmi -f $(docker images -aq)
 }
 
-function load_hmx_functions() {
-  source $HOME/workspace/healthmetrix/dotfiles/functions.sh
-}
 
 function btl_connect_to() {
   until bluetoothctl connect $1; do echo "trying to connect..."; sleep 1; done

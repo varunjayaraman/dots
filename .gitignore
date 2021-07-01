@@ -3,3 +3,5 @@ old-nvim/undodir
 glepnir-nvim/
 old-nvim/plugin/packer_compiled.vim
 packer_compiled.vim
+new-nvim/undodir
+pepa-nvim
