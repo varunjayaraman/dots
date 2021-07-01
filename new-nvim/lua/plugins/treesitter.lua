@@ -4,6 +4,7 @@ M.config = function()
   local ts_config = require("nvim-treesitter.configs")
 
   ts_config.setup {
+    autopairs = { enable = true },
     ensure_installed = {
       "javascript",
       "html",

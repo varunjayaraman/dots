@@ -16,7 +16,7 @@ M.config = function()
         Lua = {
           diagnostics = {
             enable = true,
-            globals = {"vim", "use"}
+            globals = {"vim", "use", "packer_plugins"}
           }
         }
       }

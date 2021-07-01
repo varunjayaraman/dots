@@ -66,10 +66,18 @@ local function load_options()
 	bind_option(set_local)
 end
 
+local function load_mappings()
+  vim.api.nvim_exec([[
+  inoremap jk <Esc>
+  ]], true)
+end
+
 local function load_config()
   disable_distribution_plugins()
   load_options()
+  load_mappings()
   require("plugins")
+  require("keymap")
 end
 
 load_config()

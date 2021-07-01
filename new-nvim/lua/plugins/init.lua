@@ -38,8 +38,9 @@ return packer.startup(function()
     config = require("plugins.lsp").config,
   }
 
-  use {
-     "windwp/nvim-autopairs",
-     config = require("plugins.autopairs").config
-  }
+use {
+  'rhysd/accelerated-jk',
+  opt = true
+}
+
 end)
