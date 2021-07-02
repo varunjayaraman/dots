@@ -2,3 +2,4 @@ nvim/undodir
 packer_compiled.vim
 sandbox
 old-nvim/
+packer_compiled.lua
