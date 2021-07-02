@@ -1,3 +1,5 @@
+require("plugins.lsp.config")
+
 local lspinstall = require("lspinstall")
 local nvim_lsp = require('lspconfig')
 local saga = require("lspsaga")
@@ -12,20 +14,13 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- LSP Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  virtual_text = false,
-  underline = true,
-  signs = true,
-  update_in_insert = false
-})
-
 lspinstall.setup()
 local servers = require'lspinstall'.installed_servers()
 for _, server in pairs(servers) do
   require'lspconfig'[server].setup{}
 end
 
+-- Lua
 local luadev = require("lua-dev").setup({
   lspconfig = {
     on_attach = on_attach,
@@ -39,9 +34,9 @@ local luadev = require("lua-dev").setup({
     }
   }
 })
-
 nvim_lsp.lua.setup(luadev)
 
+-- Go
 nvim_lsp.gopls.setup({
     on_attach = on_attach,
     capabilities = capabilities,
