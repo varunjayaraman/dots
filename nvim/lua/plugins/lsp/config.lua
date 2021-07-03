@@ -10,7 +10,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 
 -- symbols for autocomplete
 vim.lsp.protocol.CompletionItemKind = {
-    "   (Text) ",
+    "   (Text)",
     "   (Method)",
     "   (Function)",
     "   (Constructor)",
