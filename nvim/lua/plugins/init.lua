@@ -46,4 +46,5 @@ packer.startup(function()
   use 'kabouzeid/nvim-lspinstall'
   use{"glepnir/lspsaga.nvim"}
   use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end }
+  use {"folke/which-key.nvim"}
 end)
