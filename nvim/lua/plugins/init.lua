@@ -8,7 +8,11 @@ if fn.empty(fn.glob(install_path)) > 0 then
   execute 'packadd packer.nvim'
 end
 
-local packer = require("packer")
+local packer_ok, packer = pcall(require, "packer")
+if not packer_ok then
+  print "Packer is not loaded, exiting..."
+end
+
 packer.startup(function()
   use {"wbthomason/packer.nvim"}
   use { "kyazdani42/nvim-web-devicons" }
