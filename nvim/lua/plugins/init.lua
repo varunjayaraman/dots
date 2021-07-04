@@ -14,41 +14,36 @@ if not packer_ok then
 end
 
 packer.startup(function()
-  use {"wbthomason/packer.nvim"}
-  use { "kyazdani42/nvim-web-devicons" }
+  use "wbthomason/packer.nvim"
+
+  -- theme
+  use "kyazdani42/nvim-web-devicons"
   use{
     "glepnir/galaxyline.nvim",
     requires = {{'glepnir/zephyr-nvim'}},
-    config = function() 
-      require("plugins.statusline") 
+    config = function()
+      require("plugins.statusline")
     end,
   }
 
+  -- editor
+  use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end}
+  use "folke/which-key.nvim"
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = "BufRead",
+    -- event = "BufRead", -- Uncommenting this out causes autopairs to warn that treesitter has to load. See https://github.com/windwp/nvim-autopairs/issues/72
     config = function()
       require('plugins.treesitter').config()
     end
   }
 
-  use {
-    "hrsh7th/nvim-compe",
-    config = require("plugins.compe").config
-  }
+  -- autocompletion
+  use {"hrsh7th/nvim-compe", config = require("plugins.compe").config}
 
+  -- lang
   use "folke/lua-dev.nvim"
-
-  use{
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("plugins.lsp")
-    end,
-  }
-
+  use{"neovim/nvim-lspconfig", config = function() require("plugins.lsp") end}
   use 'kabouzeid/nvim-lspinstall'
-  use{"glepnir/lspsaga.nvim"}
-  use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end }
-  use {"folke/which-key.nvim"}
+  use"glepnir/lspsaga.nvim"
 end)

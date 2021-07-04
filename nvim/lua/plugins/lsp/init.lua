@@ -2,15 +2,23 @@ require("plugins.lsp.config")
 
 local vim = vim
 local cmd = vim.cmd
+local wk = require("which-key")
 local lspinstall = require("lspinstall")
 local nvim_lsp = require('lspconfig')
 local saga = require("lspsaga")
 saga.init_lsp_saga()
 
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end  -- Mappings.
-  local opts = { noremap=true, silent=true }  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- local opts = { noremap=true, silent=true }
+
+  wk.register({
+    name = "lsp",
+    g = {
+      name = "go to",
+      d = {"<Cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition"},
+      D = {"<Cmd>lua vim.lsp.buf.declaration()<CR>", "Peek definition"},
+    }
+  }, { buffer = bufnr })
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
