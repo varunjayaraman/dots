@@ -3,10 +3,10 @@ local actions = require('telescope.actions')
 local wk = require("which-key")
 
 telescope.setup({
-  prompt_prefix = "🔍",
-  selection_caret = "🔍",
   file_sorter = require'telescope.sorters'.get_fzy_sorter,
   defaults = {
+    prompt_prefix = "🔍",
+    selection_caret = "> ",
     mappings = {
       i = {
         ["<C-c>"] = actions.close,
@@ -33,6 +33,10 @@ wk.register({
     f = {"<cmd>lua require('telescope.builtin').find_files()<cr>", "find files"},
     b = {"<cmd>lua require('telescope.builtin').buffers()<cr>", "buffers"},
     g = {"<cmd>lua require('telescope.builtin').live_grep()<cr>", "live grep"},
+  },
+  g = {
+    name = "git",
+    c = {"<cmd>lua require('telescope.builtin').git_commits()<cr>", "commits"},
   }
 }, { prefix = "<leader>"})
 
