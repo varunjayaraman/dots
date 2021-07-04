@@ -15,10 +15,17 @@ local on_attach = function(client, bufnr)
     name = "lsp",
     g = {
       name = "go to",
-      d = {"<Cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition"},
-      D = {"<Cmd>lua vim.lsp.buf.declaration()<CR>", "Peek definition"},
+      d = {"<Cmd>lua vim.lsp.buf.definition()<CR>", "go to definition"},
+      D = {"<Cmd>lua vim.lsp.buf.declaration()<CR>", "peek definition"},
+      r = {"<Cmd>lua vim.lsp.buf.references()<CR>", "references"},
+      i = {"<Cmd>lua vim.lsp.buf.implementation()<CR>", "implementation"},
     }
-  }, { buffer = bufnr })
+  }, { buffer = bufnr, prefix = "" })
+
+  wk.register({
+    ["<C-p>"] = {"<Cmd>:Lspsaga diagnostic_jump_prev<CR>", "Jump to Previous Error"},
+    ["<C-n>"] = {"<Cmd>:Lspsaga diagnostic_jump_next<CR>", "Jump to Next Error"},
+  }, { buffer = bufnr, prefix = ""})
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
