@@ -26,6 +26,15 @@ packer.startup(function()
     end,
   }
 
+  -- files
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
+    config = function ()
+      require("plugins.telescope")
+    end
+  }
+
   -- editor
   use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end}
   use "folke/which-key.nvim"
