@@ -11,14 +11,22 @@ saga.init_lsp_saga()
 local on_attach = function(client, bufnr)
   -- local opts = { noremap=true, silent=true }
 
+  vim.api.nvim_command('nnoremap <silent>K :Lspsaga hover_doc<CR>')
   wk.register({
     name = "lsp",
     g = {
       name = "go to",
-      d = {"<Cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition"},
-      D = {"<Cmd>lua vim.lsp.buf.declaration()<CR>", "Peek definition"},
+      d = {"<Cmd>lua vim.lsp.buf.definition()<CR>", "go to definition"},
+      D = {"<Cmd>lua vim.lsp.buf.declaration()<CR>", "peek definition"},
+      r = {"<Cmd>lua vim.lsp.buf.references()<CR>", "references"},
+      i = {"<Cmd>lua vim.lsp.buf.implementation()<CR>", "implementation"},
     }
-  }, { buffer = bufnr })
+  }, { buffer = bufnr, prefix = "" })
+
+  wk.register({
+    ["<C-p>"] = {"<Cmd>:Lspsaga diagnostic_jump_prev<CR>", "Jump to Previous Error"},
+    ["<C-n>"] = {"<Cmd>:Lspsaga diagnostic_jump_next<CR>", "Jump to Next Error"},
+  }, { buffer = bufnr, prefix = ""})
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -93,4 +101,3 @@ nvim_lsp.gopls.setup({
 })
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
 
-vim.api.nvim_command('nnoremap <silent>K :Lspsaga hover_doc<CR>')
