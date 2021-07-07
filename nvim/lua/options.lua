@@ -26,7 +26,6 @@ local function load_options()
     magic = true;
     history = 2000;
     hidden = true;
-    smartcase = true;
     undofile = true;
     undodir = vim.fn.stdpath('config') .. '/undodir';
     completeopt = 'menuone,noinsert,noselect';
