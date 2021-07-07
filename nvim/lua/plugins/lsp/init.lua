@@ -11,6 +11,7 @@ saga.init_lsp_saga()
 local on_attach = function(client, bufnr)
   -- local opts = { noremap=true, silent=true }
 
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   vim.api.nvim_command('nnoremap <silent>K :Lspsaga hover_doc<CR>')
   wk.register({
     name = "lsp",
@@ -99,5 +100,12 @@ nvim_lsp.gopls.setup({
         }
     }
 })
+
+nvim_lsp.tsserver.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  init_options = {usePlaceholders = true}
+}
+
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
 

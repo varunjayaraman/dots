@@ -55,4 +55,7 @@ packer.startup(function()
   use{"neovim/nvim-lspconfig", config = function() require("plugins.lsp") end}
   use 'kabouzeid/nvim-lspinstall'
   use"glepnir/lspsaga.nvim"
+
+  use {"hrsh7th/vim-vsnip", config = function() require("plugins.vsnip") end}
+
 end)
