@@ -102,7 +102,11 @@ nvim_lsp.gopls.setup({
 })
 
 nvim_lsp.tsserver.setup {
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+    require'nvim-lsp-ts-utils'.setup {}
+  end,
   capabilities = capabilities,
   init_options = {usePlaceholders = true}
 }

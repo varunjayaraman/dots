@@ -59,9 +59,11 @@ packer.startup(function()
   use {"hrsh7th/vim-vsnip", config = function() require("plugins.vsnip") end}
 
   use {
-  "folke/zen-mode.nvim",
-  config = function()
-    require("plugins.zen_mode")
-  end
-}
+    "folke/zen-mode.nvim",
+    config = function()
+      require("plugins.zen_mode")
+    end
+  }
+
+  use {"jose-elias-alvarez/nvim-lsp-ts-utils"}
 end)
