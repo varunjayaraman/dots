@@ -17,13 +17,12 @@ packer.startup(function()
   use "wbthomason/packer.nvim"
 
   -- theme
-  use "kyazdani42/nvim-web-devicons"
-  use{
-    "glepnir/galaxyline.nvim",
-    requires = {{'glepnir/zephyr-nvim'}},
-    config = function()
-      require("plugins.statusline")
-    end,
+  use {"embark-theme/vim", config = function() vim.cmd [[colorscheme embark]] end}
+
+  use {
+    "hoob3rt/lualine.nvim",
+    requires = {"kyazdani42/nvim-web-devicons", opt = true},
+    config = function() require("plugins.lualine") end,
   }
 
   -- files
