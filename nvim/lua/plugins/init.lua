@@ -18,11 +18,18 @@ packer.startup(function()
 
   -- theme
   use {"embark-theme/vim", config = function() vim.cmd [[colorscheme embark]] end}
-
   use {
     "hoob3rt/lualine.nvim",
     requires = {"kyazdani42/nvim-web-devicons", opt = true},
     config = function() require("plugins.lualine") end,
+  }
+
+  -- ui
+  use {
+    "folke/zen-mode.nvim",
+    config = function()
+      require("plugins.zen_mode")
+    end
   }
 
   -- files
@@ -46,21 +53,11 @@ packer.startup(function()
     end
   }
 
-  -- autocompletion
+  -- lsp/completion
   use {"hrsh7th/nvim-compe", config = require("plugins.compe").config}
-
-  -- lang
   use "folke/lua-dev.nvim"
   use{"neovim/nvim-lspconfig", config = function() require("plugins.lsp") end}
   use 'kabouzeid/nvim-lspinstall'
   use"glepnir/lspsaga.nvim"
-
   use {"hrsh7th/vim-vsnip", config = function() require("plugins.vsnip") end}
-
-  use {
-  "folke/zen-mode.nvim",
-  config = function()
-    require("plugins.zen_mode")
-  end
-}
 end)
