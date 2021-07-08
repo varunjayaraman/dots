@@ -60,4 +60,7 @@ packer.startup(function()
   use 'kabouzeid/nvim-lspinstall'
   use"glepnir/lspsaga.nvim"
   use {"hrsh7th/vim-vsnip", config = function() require("plugins.vsnip") end}
+
+  -- clojure
+  use {"Olical/conjure", tag = 'v4.21.0'}
 end)
