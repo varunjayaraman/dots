@@ -9,14 +9,12 @@ local saga = require("lspsaga")
 saga.init_lsp_saga()
 
 local on_attach = function(client, bufnr)
-  -- local opts = { noremap=true, silent=true }
-
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   vim.api.nvim_command('nnoremap <silent>K :Lspsaga hover_doc<CR>')
 
   wk.register({
-    Q = {"<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", "Diagnostics"}
-  }, {prefix = "<Space>", buffer = bufnr})
+    ["<Leader>q"] = {'<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', "diagnostics list"}
+  }, { buffer = bufnr})
 
   wk.register({
     name = "lsp",
