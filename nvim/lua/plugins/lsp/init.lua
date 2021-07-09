@@ -107,5 +107,10 @@ nvim_lsp.tsserver.setup {
   init_options = {usePlaceholders = true}
 }
 
+nvim_lsp.clojure_lsp.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
 

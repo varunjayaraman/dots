@@ -12,6 +12,7 @@ local o = vim.opt
 -- Leader
 
 g.mapleader = ' '
+g.maplocalleader = ','
 
 require("options")
 require("plugins")
