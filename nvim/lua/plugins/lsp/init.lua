@@ -105,14 +105,60 @@ nvim_lsp.gopls.setup({
 })
 
 nvim_lsp.tsserver.setup {
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+  end,
   capabilities = capabilities,
-  init_options = {usePlaceholders = true}
+  init_options = {usePlaceholders = true},
+  filetypes = { 'javascript', 'typescript', 'typescriptreact' },
 }
 
+-- nvim_lsp.cssls.setup {on_attach = on_attach}
+-- nvim_lsp.html.setup {on_attach = on_attach}
 nvim_lsp.clojure_lsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+}
+
+local prettier = {
+  formatCommand = (
+    function()
+      if not vim.fn.empty(vim.fn.glob(vim.loop.cwd() .. '/.prettierrc')) then
+        return "prettier --config ./.prettierrc"
+      else
+        return "prettier --config ~/.config/nvim/.prettierrc"
+      end
+    end
+  )()
+}
+
+local eslint = {
+  lintCommand = "./node_modules/.bin/eslint -f unix --stdin --stdin-filename ${INPUT}",
+  lintIgnoreExitCode = true,
+  lintStdin = true,
+  lintFormats = {"%f:%l:%c: %m"},
+  rootMarkers = {
+    "package.json",
+    ".eslintrc.js",
+    ".eslintrc.yaml",
+    ".eslintrc.yml",
+    ".eslintrc.json",
+  }
+}
+
+nvim_lsp.efm.setup {
+  cmd = {"efm-langserver"},
+  on_attach = function(client)
+    client.resolved_capabilities.rename = false
+    client.resolved_capabilities.hover = false
+  end,
+  settings = {
+    rootMarkers = {vim.loop.cwd()},
+    languages = {
+      javascript = {eslint, prettier}
+    }
+  }
 }
 
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
