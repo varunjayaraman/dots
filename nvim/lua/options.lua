@@ -34,7 +34,7 @@ local function load_options()
     shiftwidth = 2;
     expandtab = true;
     smartcase = true;
-
+    relativenumber = false;
   }
 
   for k, v in pairs(global_local) do
@@ -46,7 +46,6 @@ local function load_options()
     smartindent = true;
     number = true;
     wrap = true;
-    relativenumber = false;
   }
   bind_option(set_local)
 end
