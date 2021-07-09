@@ -14,7 +14,7 @@ if not packer_ok then
 end
 
 packer.startup(function()
-  use "wbthomason/packer.nvim"
+  use {"wbthomason/packer.nvim", config = function() require("plugins.packer") end}
 
   -- theme
   use {"embark-theme/vim", config = function() vim.cmd [[colorscheme embark]] end}
@@ -66,4 +66,12 @@ packer.startup(function()
   use {"guns/vim-sexp"}
   use {"tpope/vim-sexp-mappings-for-regular-people"}
 
+  -- git
+  use { 
+    'TimUntersberger/neogit', 
+    requires = 'nvim-lua/plenary.nvim',
+    config = function()
+      require("plugins.neogit")
+    end
+  }
 end)
