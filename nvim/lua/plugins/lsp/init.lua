@@ -147,19 +147,5 @@ local eslint = {
   }
 }
 
-nvim_lsp.efm.setup {
-  cmd = {"efm-langserver"},
-  on_attach = function(client)
-    client.resolved_capabilities.rename = false
-    client.resolved_capabilities.hover = false
-  end,
-  settings = {
-    rootMarkers = {vim.loop.cwd()},
-    languages = {
-      javascript = {eslint, prettier}
-    }
-  }
-}
-
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
 
