@@ -40,6 +40,10 @@ packer.startup(function()
       require("plugins.telescope")
     end
   }
+  use {
+    "vim-test/vim-test",
+    config = function() require("plugins.vim_test") end,
+  }
 
   -- editor
   use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end}
