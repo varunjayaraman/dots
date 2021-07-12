@@ -45,6 +45,9 @@ packer.startup(function()
     config = function() require("plugins.vim_test") end,
   }
 
+  -- terminal
+  use {"kassio/neoterm"}
+
   -- editor
   use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end}
   use "folke/which-key.nvim"
