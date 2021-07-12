@@ -9,6 +9,7 @@ local saga = require("lspsaga")
 saga.init_lsp_saga()
 
 local on_attach = function(client, bufnr)
+  vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   vim.api.nvim_command('nnoremap <silent>K :Lspsaga hover_doc<CR>')
 
@@ -33,10 +34,12 @@ local on_attach = function(client, bufnr)
   }, { buffer = bufnr, prefix = ""})
 
   if client.resolved_capabilities.document_formatting then
-    vim.cmd [[augroup Format]]
-    vim.cmd [[autocmd! * <buffer>]]
-    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
-    vim.cmd [[augroup END]]
+    vim.api.nvim_exec([[
+    augroup LspAutocommands
+    autocmd! * <buffer>
+    autocmd BufWritePost <buffer> LspFormatting
+    augroup END
+    ]], true)
   end
 end
 
@@ -141,14 +144,14 @@ nvim_lsp.efm.setup{
     rootMarkers = {".git/"},
     languages = {
       typescript = {prettier, eslint},
-      javascript = {prettier, eslint},
-      typescriptreact = {prettier, eslint},
-      javascriptreact = {prettier, eslint},
-      -- yaml = {prettier},
-      -- json = {prettier},
-      html = {prettier},
-      -- scss = {prettier},
-      css = {prettier},
+      javascript = {eslint,prettier},
+      typescriptreact = {eslint,prettier},
+      javascriptreact = {eslint,prettier},
+      -- yaml = {eslint},
+      -- json = {eslint},
+      html = {prettier, eslint},
+      -- scss = {eslint},
+      css = {prettier, eslint},
     },
   }
 }
