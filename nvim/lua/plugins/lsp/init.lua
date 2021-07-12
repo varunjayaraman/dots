@@ -31,6 +31,13 @@ local on_attach = function(client, bufnr)
     ["<C-p>"] = {"<Cmd>:Lspsaga diagnostic_jump_prev<CR>", "Jump to Previous Error"},
     ["<C-n>"] = {"<Cmd>:Lspsaga diagnostic_jump_next<CR>", "Jump to Next Error"},
   }, { buffer = bufnr, prefix = ""})
+
+  if client.resolved_capabilities.document_formatting then
+    vim.cmd [[augroup Format]]
+    vim.cmd [[autocmd! * <buffer>]]
+    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+    vim.cmd [[augroup END]]
+  end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -114,36 +121,35 @@ nvim_lsp.tsserver.setup {
   filetypes = { 'javascript', 'typescript', 'typescriptreact' },
 }
 
--- nvim_lsp.cssls.setup {on_attach = on_attach}
--- nvim_lsp.html.setup {on_attach = on_attach}
+nvim_lsp.cssls.setup {on_attach = on_attach}
+nvim_lsp.html.setup {on_attach = on_attach}
+
 nvim_lsp.clojure_lsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
 
-local prettier = {
-  formatCommand = (
-    function()
-      if not vim.fn.empty(vim.fn.glob(vim.loop.cwd() .. '/.prettierrc')) then
-        return "prettier --config ./.prettierrc"
-      else
-        return "prettier --config ~/.config/nvim/.prettierrc"
-      end
-    end
-  )()
-}
+local prettier = require("plugins.efm.prettier")
+local eslint = require("plugins.efm.eslint")
 
-local eslint = {
-  lintCommand = "./node_modules/.bin/eslint -f unix --stdin --stdin-filename ${INPUT}",
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  rootMarkers = {
-    "package.json",
-    ".eslintrc.js",
-    ".eslintrc.yaml",
-    ".eslintrc.yml",
-    ".eslintrc.json",
+nvim_lsp.efm.setup{
+  on_attach = on_attach,
+  init_options = {documentFormatting = true},
+  root_dir = vim.loop.cwd,
+  filetypes = {"javascriptreact", "javascript", "typescript", "typescriptreact"},
+  settings = {
+    rootMarkers = {".git/"},
+    languages = {
+      typescript = {prettier, eslint},
+      javascript = {prettier, eslint},
+      typescriptreact = {prettier, eslint},
+      javascriptreact = {prettier, eslint},
+      -- yaml = {prettier},
+      -- json = {prettier},
+      html = {prettier},
+      -- scss = {prettier},
+      css = {prettier},
+    },
   }
 }
 
