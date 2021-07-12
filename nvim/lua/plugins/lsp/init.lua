@@ -31,6 +31,13 @@ local on_attach = function(client, bufnr)
     ["<C-p>"] = {"<Cmd>:Lspsaga diagnostic_jump_prev<CR>", "Jump to Previous Error"},
     ["<C-n>"] = {"<Cmd>:Lspsaga diagnostic_jump_next<CR>", "Jump to Next Error"},
   }, { buffer = bufnr, prefix = ""})
+
+  if client.resolved_capabilities.document_formatting then
+    vim.cmd [[augroup Format]]
+    vim.cmd [[autocmd! * <buffer>]]
+    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+    vim.cmd [[augroup END]]
+  end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -105,14 +112,45 @@ nvim_lsp.gopls.setup({
 })
 
 nvim_lsp.tsserver.setup {
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+  end,
   capabilities = capabilities,
-  init_options = {usePlaceholders = true}
+  init_options = {usePlaceholders = true},
+  filetypes = { 'javascript', 'typescript', 'typescriptreact' },
 }
+
+nvim_lsp.cssls.setup {on_attach = on_attach}
+nvim_lsp.html.setup {on_attach = on_attach}
 
 nvim_lsp.clojure_lsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+}
+
+local prettier = require("plugins.efm.prettier")
+local eslint = require("plugins.efm.eslint")
+
+nvim_lsp.efm.setup{
+  on_attach = on_attach,
+  init_options = {documentFormatting = true},
+  root_dir = vim.loop.cwd,
+  filetypes = {"javascriptreact", "javascript", "typescript", "typescriptreact"},
+  settings = {
+    rootMarkers = {".git/"},
+    languages = {
+      typescript = {prettier, eslint},
+      javascript = {prettier, eslint},
+      typescriptreact = {prettier, eslint},
+      javascriptreact = {prettier, eslint},
+      -- yaml = {prettier},
+      -- json = {prettier},
+      html = {prettier},
+      -- scss = {prettier},
+      css = {prettier},
+    },
+  }
 }
 
 cmd('autocmd BufWritePre *.go lua goimports(1000)')
