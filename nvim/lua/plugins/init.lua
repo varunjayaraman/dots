@@ -50,6 +50,7 @@ packer.startup(function()
 
   -- editor
   use {"windwp/nvim-autopairs", config = function() require'plugins.autopairs' end}
+  use {"windwp/nvim-ts-autotag", config = function() require'plugins.autotag' end} 
   use "folke/which-key.nvim"
   use {
     "nvim-treesitter/nvim-treesitter",
@@ -74,8 +75,8 @@ packer.startup(function()
   use {"tpope/vim-sexp-mappings-for-regular-people"}
 
   -- git
-  use { 
-    'TimUntersberger/neogit', 
+  use {
+    'TimUntersberger/neogit',
     requires = 'nvim-lua/plenary.nvim',
     config = function()
       require("plugins.neogit")
